@@ -32,14 +32,12 @@ public class CommentServicesImpl implements CommentService {
     private final UserServiceImpl userServiceImpl;
 
     @Autowired
-    public CommentServicesImpl(CommentJpaRepository commentJpaRepository, @Lazy  LikeServiceImpl likeServiceImpl, PostServiceImpl postServiceImpl, UserServiceImpl userServiceImpl) {
+    public CommentServicesImpl(CommentJpaRepository commentJpaRepository, @Lazy LikeServiceImpl likeServiceImpl, PostServiceImpl postServiceImpl, UserServiceImpl userServiceImpl) {
         this.commentJpaRepository = commentJpaRepository;
         this.likeServiceImpl = likeServiceImpl;
         this.postServiceImpl = postServiceImpl;
         this.userServiceImpl = userServiceImpl;
     }
-
-
 
     public ResponseEntity<Comment> findComentBYid(Long idComment) {
 
@@ -68,17 +66,18 @@ public class CommentServicesImpl implements CommentService {
         return commentDTOList;
     }
 
-    public Boolean hasPostcomment(Post post, Users user){
-        Optional<Comment> commentOPt =  commentJpaRepository.findByPostAndUser(post, user);
+    @Override
+    public Boolean hasPostcomment(Post post, Users user) {
+        Optional<Comment> commentOPt = commentJpaRepository.findByPostAndUser(post, user);
         return commentOPt.isPresent();
     }
-    
-    
-    public ResponseEntity<CommentDTO> createComment(Long idPost, Long idUser, Comment comment  ) {
+
+    @Override
+    public ResponseEntity<CommentDTO> createComment(Long idPost, Long idUser, Comment comment) {
 
         Users user = userServiceImpl.getUserNormalbyId(idUser);
         Post post = postServiceImpl.getPostsByPostid(idPost);
-        if(hasPostcomment(post, user)){
+        if (hasPostcomment(post, user)) {
             return ResponseEntity.badRequest().build();
         }
         comment.setUser(user);
@@ -86,12 +85,11 @@ public class CommentServicesImpl implements CommentService {
         commentJpaRepository.save(comment);
         return ResponseEntity.ok(comment.toDTO());
     }
-
-    
-    public void deleteComment (Long idcomment){
-        Optional<Comment> commentYoEliminate =  commentJpaRepository.findById(idcomment);
+   @Override
+    public void deleteComment(Long idcomment) {
+        Optional<Comment> commentYoEliminate = commentJpaRepository.findById(idcomment);
         commentJpaRepository.delete(commentYoEliminate.get());
-        
+
     }
-    
+
 }
