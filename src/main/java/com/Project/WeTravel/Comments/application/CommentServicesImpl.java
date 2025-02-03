@@ -90,6 +90,7 @@ public class CommentServicesImpl implements CommentService {
     
     public void deleteComment (Long idcomment){
         Optional<Comment> commentYoEliminate =  commentJpaRepository.findById(idcomment);
+        commentJpaRepository.delete(commentYoEliminate.get());
         
     }
     
