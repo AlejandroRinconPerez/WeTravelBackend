@@ -20,25 +20,22 @@ public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idUser;
-    
+
     @Column(nullable = false)
     private String name;
-    
+
     @Column(nullable = false)
     private String userName;
-     
+
     @Column(nullable = false)
     private String email;
-    
+
     @Column(nullable = false)
     private String password;
     private String biography;
     private String photo;
 
     private Boolean active;
-    
-    
-    
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date creationDate;
@@ -48,55 +45,39 @@ public class Users {
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date editionDate;
-    
-    
-    
-    
-    
+
     // FOLLOWER
     @OneToMany(mappedBy = "follower", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Follow>  followerList =new ArrayList<>();
-    
+    private List<Follow> followerList = new ArrayList<>();
+
     //FOLLOWED
     @OneToMany(mappedBy = "followed", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Follow>  followedList =new ArrayList<>();
-    
-    
+    private List<Follow> followedList = new ArrayList<>();
+
     // @JsonManagedReference so el DTO  no sirve Activar
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Post> postList = new ArrayList<>();
-    
-    
-     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Likes> likeList = new ArrayList<>();
-    
-    
-    
-     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Comment> commentList = new ArrayList<>();
-    
-    
-      @OneToMany(mappedBy = "to_user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Notification> notifications = new ArrayList<>(); // Cambiado a lista de notificaciones
-     
-    
-    
-    
+
+    @OneToMany(mappedBy = "toUser", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Notification> notifications = new ArrayList<>();
+
     public Users() {
         this.creationDate = new Date(); // asi se asi se asigna la fecha de creacion de manera automatica 
-        
+
     }
-    
-    
-    
-        
 
     public Users(String name, String userName, String email, String password) {
         this.name = name;
         this.userName = userName;
         this.email = email;
         this.password = password;
-        
+
     }
 
     public Long getIdUser() {
@@ -187,7 +168,6 @@ public class Users {
         this.editionDate = editionDate;
     }
 
-    
     // Métodos para followerList
     public List<Follow> getFollowerList() {
         return followerList;
@@ -202,8 +182,7 @@ public class Users {
         this.followerList.remove(follow);
         follow.setFollower(null);
     }
-    
-    
+
     // Métodos para followedList
     public List<Follow> getFollowedList() {
         return followedList;
@@ -218,9 +197,8 @@ public class Users {
         this.followedList.remove(follow);
         follow.setFollowed(null);
     }
-    
-    
-     // Métodos para postList
+
+    // Métodos para postList
     public List<Post> getPostList() {
         return postList;
     }
@@ -234,8 +212,7 @@ public class Users {
         this.postList.remove(post);
         post.setUser(null);
     }
-    
-    
+
     // Métodos para likeList
     public List<Likes> getLikeList() {
         return likeList;
@@ -250,7 +227,7 @@ public class Users {
         this.likeList.remove(like);
         like.setUser(null);
     }
-    
+
     // Métodos para commentList
     public List<Comment> getCommentList() {
         return commentList;
@@ -266,24 +243,20 @@ public class Users {
         comment.setUser(null);
     }
 // Notificaton
-       public List<Notification> getNotifications() {
+    public List<Notification> getNotifications() {
         return notifications;
     }
 
     public void addNotification(Notification notification) {
         this.notifications.add(notification);
-        notification.setTo_user(this);
+        notification.setToUser(this);
     }
 
     public void removeNotification(Notification notification) {
         this.notifications.remove(notification);
-        notification.setTo_user(null);
+        notification.setToUser(null);
     }
-    
-    
-    
-    
-    
+
     public UsersDTO toDTO() {
         UsersDTO usersDTO = new UsersDTO();
         usersDTO.setBiography(this.biography);
@@ -296,11 +269,10 @@ public class Users {
 
         usersDTO.setLastLogin(this.lastLogin);
         return usersDTO;
-                
-        
+
     }
-    
-    public  static  Users fromDTO( UsersDTO usersDTO){
+
+    public static Users fromDTO(UsersDTO usersDTO) {
         Users user = new Users();
         user.setBiography(usersDTO.getBiography());
         user.setCreationDate(usersDTO.getCreationDate());
@@ -310,52 +282,46 @@ public class Users {
         user.setLastLogin(usersDTO.getLastLogin());
         user.setPhoto(usersDTO.getPhoto());
         user.setUserName(usersDTO.getUserName());
-        return  user;
+        return user;
     }
-    
-      public CreateUserDTO toDTOCreate() {
+
+    public CreateUserDTO toDTOCreate() {
         CreateUserDTO createUserDTO = new CreateUserDTO();
         createUserDTO.setName(this.name);
         createUserDTO.setEmail(this.email);
         createUserDTO.setPassword(this.password);
         createUserDTO.setUserName(this.userName);
         return createUserDTO;
-                
-        
+
     }
-    
-    public  static  Users fromDTOCreate( CreateUserDTO createUserDTO){
+
+    public static Users fromDTOCreate(CreateUserDTO createUserDTO) {
         Users user = new Users();
         user.setName(createUserDTO.getName());
         user.setEmail(createUserDTO.getEmail());
         user.setPassword(createUserDTO.getPassword());
         user.setUserName(createUserDTO.getUserName());
-        return  user;
+        return user;
     }
 
     @Override
     public String toString() {
-        return "Users{" + "idUser=" + idUser + 
-                ", name=" + name + 
-                ", userName=" + userName + 
-                ", email=" + email +
-                ", password=" + password + 
-                ", biography=" + biography + 
-                ", photo=" + photo + 
-                ", active=" + active +
-                ", creationDate=" + creationDate + 
-                ", lastLogin=" + lastLogin +
-                ", editionDate=" + editionDate + 
-                ", followerList=" + followerList +
-                ", followedList=" + followedList + 
-                ", postList=" + postList + 
-                ", likeList=" + likeList + 
-                ", commentList=" + commentList + '}';
+        return "Users{" + "idUser=" + idUser
+                + ", name=" + name
+                + ", userName=" + userName
+                + ", email=" + email
+                + ", password=" + password
+                + ", biography=" + biography
+                + ", photo=" + photo
+                + ", active=" + active
+                + ", creationDate=" + creationDate
+                + ", lastLogin=" + lastLogin
+                + ", editionDate=" + editionDate
+                + ", followerList=" + followerList
+                + ", followedList=" + followedList
+                + ", postList=" + postList
+                + ", likeList=" + likeList
+                + ", commentList=" + commentList + '}';
     }
-    
-    
-    
-    
-    
 
 }

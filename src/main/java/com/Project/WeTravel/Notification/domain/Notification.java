@@ -12,10 +12,14 @@ public class Notification {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idNotofication;
+    private Long idNotification;
 
     private Boolean status;
     private Date notificationDate;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_follow", nullable = true)
+    private Follow follow;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_comment", nullable = true)
@@ -25,47 +29,26 @@ public class Notification {
     @JoinColumn(name = "id_like", nullable = true)
     private Likes like;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "new_follower", nullable = true)
-    private Follow user;
-
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reciber")
-    private Users to_user;
+    private Users toUser;
 
     public Notification() {
     }
 
-    public Notification(Long idNotofication, Boolean status, Date notificationDate, Comment comment, Users to_user) {
-        this.idNotofication = idNotofication;
+    public Notification(Boolean status, Date notificationDate, Follow follow, Users toUser) {
         this.status = status;
         this.notificationDate = notificationDate;
-        this.comment = comment;
-        this.to_user = to_user;
+        this.follow = follow;
+        this.toUser = toUser;
     }
 
-    public Notification(Long idNotofication, Boolean status, Date notificationDate, Likes like, Users to_user) {
-        this.idNotofication = idNotofication;
-        this.status = status;
-        this.notificationDate = notificationDate;
-        this.like = like;
-        this.to_user = to_user;
+    public Long getIdNotification() {
+        return idNotification;
     }
 
-    public Notification(Long idNotofication, Boolean status, Date notificationDate, Follow user, Users to_user) {
-        this.idNotofication = idNotofication;
-        this.status = status;
-        this.notificationDate = notificationDate;
-        this.user = user;
-        this.to_user = to_user;
-    }
-
-    public Long getIdNotofication() {
-        return idNotofication;
-    }
-
-    public void setIdNotofication(Long idNotofication) {
-        this.idNotofication = idNotofication;
+    public void setIdNotification(Long idNotification) {
+        this.idNotification = idNotification;
     }
 
     public Boolean getStatus() {
@@ -84,6 +67,22 @@ public class Notification {
         this.notificationDate = notificationDate;
     }
 
+    public Follow getFollow() {
+        return follow;
+    }
+
+    public void setFollow(Follow follow) {
+        this.follow = follow;
+    }
+
+    public Users getToUser() {
+        return toUser;
+    }
+
+    public void setToUser(Users toUser) {
+        this.toUser = toUser;
+    }
+
     public Comment getComment() {
         return comment;
     }
@@ -100,31 +99,9 @@ public class Notification {
         this.like = like;
     }
 
-    public Follow getUser() {
-        return user;
-    }
-
-    public void setUser(Follow user) {
-        this.user = user;
-    }
-
-    public Users getTo_user() {
-        return to_user;
-    }
-
-    public void setTo_user(Users to_user) {
-        this.to_user = to_user;
-    }
-
     @Override
     public String toString() {
-        return "Notification{" + "idNotofication=" + idNotofication
-                + ", status=" + status
-                + ", notificationDate=" + notificationDate
-                + ", comment=" + comment
-                + ", like=" + like
-                + ", user=" + user
-                + ", to_user=" + to_user + '}';
+        return "Notification{" + "idNotification=" + idNotification + ", status=" + status + ", notificationDate=" + notificationDate + ", follow=" + follow + ", toUser=" + toUser + '}';
     }
 
 }

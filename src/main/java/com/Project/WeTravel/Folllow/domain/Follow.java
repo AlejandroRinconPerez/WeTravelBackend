@@ -36,11 +36,7 @@ public class Follow {
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateOfFollowing;
 
-    @OneToOne(
-            mappedBy = "user", // Debe coincidir con el nombre del campo en Perfil
-            cascade = CascadeType.ALL, // Operaciones en cascada
-            fetch = FetchType.LAZY
-    )
+    @OneToOne(mappedBy = "follow", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Notification notification;
 
     public Follow() {

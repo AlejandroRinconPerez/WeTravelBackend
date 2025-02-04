@@ -1,10 +1,10 @@
 package com.Project.WeTravel.Notification.application;
 
-import com.Project.WeTravel.Users.domain.Users;
+import com.Project.WeTravel.Folllow.domain.Follow;
 
 public interface NotificationService {
 
-    public void createFollowNotification(Users follower, Users followed);
+    public void createFollowNotification(Follow follow);
 
     void markAsRead(Long notificationId);
 

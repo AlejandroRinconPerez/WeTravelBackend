@@ -44,10 +44,10 @@ public class FollowServiceImpl implements FollowService {
                 throw new IllegalArgumentException("You cannot follow yourself.");
             }
 
-
             Follow follow = new Follow(followed, follower);
             followJpaRepository.save(follow);
 
+            notificationService.createFollowNotification(follow);
             return follow;
         } else {
             throw new EntityNotFoundException("Follower or followed user not found.");
