@@ -83,6 +83,10 @@ public class CommentServicesImpl implements CommentService {
         return commentOPt.isPresent();
     }
 
+    public void savecomment(Comment comment ){
+        commentJpaRepository.save(comment);
+    }
+    
     @Override
     public ResponseEntity<CommentDTO> createComment(Long idPost, Long idUser, Comment comment) {
 
@@ -96,6 +100,12 @@ public class CommentServicesImpl implements CommentService {
         }
         comment.setUser(user);
         comment.setPost(post);
+        user.getCommentList().add(comment);
+        post.getCommentList().add(comment);
+        
+        
+        postServiceImpl.createPost(post);
+        userServiceImpl.saveUserEntity(user);
         commentJpaRepository.save(comment);
         return ResponseEntity.ok(comment.toDTO());
     }

@@ -45,7 +45,13 @@ public class FollowServiceImpl implements FollowService {
             }
 
             Follow follow = new Follow(followed, follower);
+            follower.addFollower(follow);
+            followed.addFollowed(follow);
+            
+            userJpaRepositorty.save(followed);
+            userJpaRepositorty.save(follower);
             followJpaRepository.save(follow);
+            
 
             notificationService.createFollowNotification(follow);
             return follow;

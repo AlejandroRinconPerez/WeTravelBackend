@@ -40,7 +40,9 @@ public class NotificationServiceImp implements NotificationService {
             notification.setNotificationDate(new Date());
             notification.setFollow(follow);
             notification.setToUser(followed.get());
-
+            Users user =  followed.get();
+            user.addNotification(notification);
+            userJpaRepositorty.save(user);
             notificationJpaRepository.save(notification);
         }
     }

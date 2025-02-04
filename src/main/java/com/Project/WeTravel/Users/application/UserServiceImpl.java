@@ -123,6 +123,11 @@ public class UserServiceImpl implements UserService {
         return ResponseEntity.ok(userdaved.toDTO());
     }
 
+    
+    public Users  saveUserEntity(Users user ) {
+      return userJpaRepositorty.save(user);
+    }
+    
     @Override
     public ResponseEntity<Void> deleteUser(Long idUser) {
         if (idUser == null || idUser <= 0) {

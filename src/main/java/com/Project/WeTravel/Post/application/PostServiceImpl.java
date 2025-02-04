@@ -90,6 +90,15 @@ public class PostServiceImpl implements PostService {
 
     }
 
+    
+    
+    public void createPost(Post post){
+        postJpaRepository.save(post);
+    }
+    
+    
+    
+    
     @Override
     public ResponseEntity<Void> deletePost(Long idPost) {
 

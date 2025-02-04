@@ -91,6 +91,11 @@ public class LikeServiceImpl implements LikeService {
             return ResponseEntity.badRequest().build();
         }
         Likes like = new Likes(user, postlike);
+        
+        user.addLike(like);
+        postlike.addLike(like);
+        userServiceImpl.saveUserEntity(user);
+        postServiceImpl.createPost(postlike);
         likeJpaRepository.save(like);
         return ResponseEntity.ok(like.toLikePostDTO());
 
@@ -109,7 +114,10 @@ public class LikeServiceImpl implements LikeService {
             return ResponseEntity.badRequest().build();
         }
         Likes like = new Likes(user, commentlike);
-          
+        commentlike.addlike(like);
+        user.addLike(like);
+        commentServicesImpl.savecomment(commentlike);
+        userServiceImpl.saveUserEntity(user);
         likeJpaRepository.save(like);
         return ResponseEntity.ok(like.toLikeCommentDTO());
 
