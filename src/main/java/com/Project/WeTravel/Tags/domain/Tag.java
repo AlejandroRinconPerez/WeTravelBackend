@@ -14,7 +14,7 @@ public class Tag {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idTag;
 
-    private String tagContent;
+   private String tagContent; 
 
     
     

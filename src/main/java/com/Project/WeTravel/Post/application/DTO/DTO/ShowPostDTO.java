@@ -2,14 +2,6 @@
 package com.Project.WeTravel.Post.application.DTO.DTO;
 
 
-import com.Project.WeTravel.Comments.domain.Comment;
-import com.Project.WeTravel.Likes.domain.Likes;
-import com.Project.WeTravel.Photo.domain.Photo;
-import com.Project.WeTravel.Tags.domain.Tag;
-import com.Project.WeTravel.Users.application.UserDTO.UsersDTO;
-import java.util.Date;
-import java.util.List;
-
 import com.Project.WeTravel.Users.application.UserDTO.UsersDTO;
 import java.util.Date;
 

@@ -21,6 +21,17 @@ public class Photo {
     public Photo() {
     }
 
+    public Photo(String UrlImg) {
+        this.UrlImg = UrlImg;
+    }
+
+    public Photo(String UrlImg, Post post) {
+        this.UrlImg = UrlImg;
+        this.post = post;
+    }
+
+    
+    
     public Photo(Long idPhoto, String UrlImg, Post post) {
         this.idPhoto = idPhoto;
         this.UrlImg = UrlImg;

@@ -14,6 +14,8 @@ import com.Project.WeTravel.Post.application.PostServiceImpl;
 import com.Project.WeTravel.Post.domain.Post;
 import com.Project.WeTravel.Users.application.UserServiceImpl;
 import com.Project.WeTravel.Users.domain.Users;
+import com.Project.WeTravel.Utilities.exceptions.InvalidInputException;
+import com.Project.WeTravel.Utilities.exceptions.NotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -49,6 +51,12 @@ public class CommentServicesImpl implements CommentService {
 
     @Override
     public List<CommentDTO> findAllByPost(Post post) {
+        if (post == null) {
+            throw new InvalidInputException("Post can not br null");
+        }
+        if (post.getIdPost() == null || post.getIdPost() <= 0) {
+            throw new InvalidInputException("Id  Post is NOT  VALID ");
+        }
         List<Comment> commentList = commentJpaRepository.findAllByPost(post);
         List<CommentDTO> commentDTOList = new ArrayList<>();
 
@@ -68,6 +76,9 @@ public class CommentServicesImpl implements CommentService {
 
     @Override
     public Boolean hasPostcomment(Post post, Users user) {
+        if (post == null || user == null) {
+            throw new InvalidInputException("Post or user can not be null");
+        }
         Optional<Comment> commentOPt = commentJpaRepository.findByPostAndUser(post, user);
         return commentOPt.isPresent();
     }
@@ -77,6 +88,9 @@ public class CommentServicesImpl implements CommentService {
 
         Users user = userServiceImpl.getUserNormalbyId(idUser);
         Post post = postServiceImpl.getPostsByPostid(idPost);
+         if (post == null || user == null) {
+            throw new InvalidInputException("Post or user can not be null");
+        }
         if (hasPostcomment(post, user)) {
             return ResponseEntity.badRequest().build();
         }
@@ -85,9 +99,16 @@ public class CommentServicesImpl implements CommentService {
         commentJpaRepository.save(comment);
         return ResponseEntity.ok(comment.toDTO());
     }
-   @Override
+
+    @Override
     public void deleteComment(Long idcomment) {
+         if (idcomment == null || idcomment <= 0) {
+        throw new InvalidInputException("El ID del comentario no es válido");
+    }
         Optional<Comment> commentYoEliminate = commentJpaRepository.findById(idcomment);
+        if(!commentYoEliminate.isPresent()){
+             throw new NotFoundException("Comment not found with ID: " + idcomment);
+        }
         commentJpaRepository.delete(commentYoEliminate.get());
 
     }

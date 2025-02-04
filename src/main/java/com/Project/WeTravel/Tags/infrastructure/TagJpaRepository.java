@@ -1,4 +1,3 @@
-
 package com.Project.WeTravel.Tags.infrastructure;
 
 import com.Project.WeTravel.Post.domain.Post;
@@ -11,22 +10,19 @@ import org.springframework.data.jpa.mapping.JpaPersistentEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+public interface TagJpaRepository extends JpaRepository<Tag, Long> {
 
-public interface TagJpaRepository extends JpaRepository<Tag, Long>{
-    
-     Optional<Tag> findBytagContent(String name);
-     boolean existsBytagContent(String tagContent); 
-    
-    
-       @Query("SELECT new com.Project.WeTravel.Tags.application.TagsDTO.TagDTO(t.tagContent, COUNT(p)) " +
-           "FROM Tag t JOIN t.postList p " +
-           "GROUP BY t.tagContent")
+    Optional<Tag> findBytagContent(String name);
+
+    boolean existsBytagContent(String tagContent);
+
+    @Query("SELECT new com.Project.WeTravel.Tags.application.TagsDTO.TagDTO(t.tagContent, COUNT(p)) "
+            + "FROM Tag t JOIN t.postList p "
+            + "GROUP BY t.tagContent")
     List<TagDTO> findTagUsageCount();
-    
-    
+
     List<Tag> findAllByPostList(Post post);
 
-     
-     
-     
+   boolean existsByTagContent(String tagContent);
+
 }

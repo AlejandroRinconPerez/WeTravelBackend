@@ -1,35 +1,34 @@
+
 package com.Project.WeTravel.Post.application.DTO.DTO;
 
+import com.Project.WeTravel.Likes.application.DTO.LikePostDTO;
+import com.Project.WeTravel.Photo.domain.Photo;
 import com.Project.WeTravel.Post.domain.Post;
+import com.Project.WeTravel.Tags.domain.Tag;
 import com.Project.WeTravel.Users.domain.Users;
 import java.util.Date;
+import java.util.List;
 
 public class CreatePostDTO {
 
-    private Users user;
+  
     private String description;
     private Date creationDate;
     private Date updatedDate;
+    private List<String> listTag;
+    private List<String> listPhoto;
+    
+    
+    
+    
+    
 
-   public CreatePostDTO() {
-    this.creationDate = new Date();
-    this.updatedDate = new Date();
-}
-
-    public CreatePostDTO(Users user, String description, Date creationDate, Date updatedDate) {
-        this.user = user;
-        this.description = description;
-        this.creationDate = creationDate;
-        this.updatedDate = updatedDate;
+    public CreatePostDTO() {
+        this.creationDate = new Date();
+        this.updatedDate = new Date();
     }
 
-    public Users getUser() {
-        return user;
-    }
-
-    public void setUser(Users user) {
-        this.user = user;
-    }
+  
 
     public String getDescription() {
         return description;
@@ -55,6 +54,30 @@ public class CreatePostDTO {
         this.updatedDate = updatedDate;
     }
 
- 
+    public List<String> getListTag() {
+        return listTag;
+    }
 
+    public void setListTag(List<String> listTag) {
+        this.listTag = listTag;
+    }
+
+    public List<String> getListPhoto() {
+        return listPhoto;
+    }
+
+    public void setListPhoto(List<String> listPhoto) {
+        this.listPhoto = listPhoto;
+    }
+
+    public void addTagtoPost(String tag){
+        this.listTag.add(tag);
+        
+        
+        
+        
+    }
+    
+    
+    
 }

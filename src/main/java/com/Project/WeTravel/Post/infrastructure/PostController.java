@@ -1,7 +1,9 @@
 package com.Project.WeTravel.Post.infrastructure;
 
+import com.Project.WeTravel.Post.application.DTO.DTO.CreatePostDTO;
 import com.Project.WeTravel.Post.application.DTO.DTO.ShowPostDTO;
 import com.Project.WeTravel.Post.application.PostServiceImpl;
+import com.Project.WeTravel.Post.domain.Post;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,6 +29,23 @@ public class PostController {
     }
 
  
+    
+    @PostMapping("{idUser}")
+public ResponseEntity<Post> CreatePost(@PathVariable Long idUser, @RequestBody CreatePostDTO createPostDTO) {
+    
+    if (idUser == null) {
+        return ResponseEntity.badRequest().build();
+    }
+    if (createPostDTO == null) {
+        return ResponseEntity.badRequest().build();
+    }
+    
+    return postServiceImpl.createPost(createPostDTO, idUser);
+}
+
+    
+    
+    
    
    @GetMapping
     public ResponseEntity<List<ShowPostDTO>> getAllPosts() {

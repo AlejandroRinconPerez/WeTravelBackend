@@ -6,14 +6,20 @@ package com.Project.WeTravel.Post.application;
 
 import com.Project.WeTravel.Photo.application.PhotoServiceImpl;
 import com.Project.WeTravel.CombinePost.CombinePostDTO;
+import com.Project.WeTravel.Photo.domain.Photo;
+import com.Project.WeTravel.Photo.infrastructure.PhotoJpaRepository;
 import com.Project.WeTravel.Post.application.DTO.DTO.CreatePostDTO;
 import com.Project.WeTravel.Post.application.DTO.DTO.ShowPostDTO;
 import com.Project.WeTravel.Post.domain.Post;
 import com.Project.WeTravel.Post.infrastructure.PostJpaRepository;
 import com.Project.WeTravel.Tags.application.TagServiceIpml;
+import com.Project.WeTravel.Tags.domain.Tag;
+import com.Project.WeTravel.Tags.infrastructure.TagJpaRepository;
 import com.Project.WeTravel.Users.application.UserDTO.UsersDTO;
 import com.Project.WeTravel.Users.application.UserServiceImpl;
 import com.Project.WeTravel.Users.domain.Users;
+import com.Project.WeTravel.Utilities.exceptions.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -27,27 +33,62 @@ public class PostServiceImpl implements PostService {
 
     private final PostJpaRepository postJpaRepository;
     private final UserServiceImpl userServiceImpl;
-   
+    private final PhotoJpaRepository photoJpaRepository;
+    private final TagJpaRepository tagJpaRepository;
 
     @Autowired
-    public PostServiceImpl(PostJpaRepository postJpaRepository, UserServiceImpl userServiceImpl) {
+    public PostServiceImpl(PostJpaRepository postJpaRepository, UserServiceImpl userServiceImpl, PhotoJpaRepository photoJpaRepository, TagJpaRepository tagJpaRepository) {
         this.postJpaRepository = postJpaRepository;
         this.userServiceImpl = userServiceImpl;
-     
+        this.photoJpaRepository = photoJpaRepository;
+        this.tagJpaRepository = tagJpaRepository;
     }
 
     @Override
-    public Post createPost(CreatePostDTO createPostDTO) {
+    public ResponseEntity<Post> createPost(CreatePostDTO createPostDTO, Long iduser) {
+        if (iduser == null) {
+            throw new InvalidInputException("User Id invalid");
+        }
+        List<Photo> photoList = new ArrayList();
+        List<Tag> tagList = new ArrayList();
+        
+        
+        Users user = userServiceImpl.getUserNormalbyId(iduser);
+        if (user == null) {
+            throw new NotFoundException("Users has not been found");
+        }
+        Post post = new Post();
+        post.setDescription(createPostDTO.getDescription());
+        post.setCreationDate(createPostDTO.getCreationDate());
+        post.setUpdatedDate(createPostDTO.getUpdatedDate());
+        post.setUser(user);
 
-        Post newPost = Post.fromDTO(createPostDTO);
-        newPost = postJpaRepository.save(newPost);
+        if (createPostDTO.getListPhoto() != null && !createPostDTO.getListPhoto().isEmpty()) {
+            for (String phototext : createPostDTO.getListPhoto()) {
+                Photo photo = new Photo(phototext);
+                photo.setPost(post);
+                photoJpaRepository.save(photo);
+                post.getPhotolist().add(photo);
+            }
+        }
 
-        // Por ahora esto es un metodo basico de Post sin foto sin likes sin comentarios 
-        return newPost;
+        if (createPostDTO.getListTag() != null && !createPostDTO.getListTag().isEmpty()) {
+            for (String tagtext : createPostDTO.getListTag()) {
+                 Tag tag = new Tag(tagtext);
+                if(!tagJpaRepository.existsByTagContent(tagtext)){
+                  tagJpaRepository.save(tag); // lo persistimos
+                } else {
+                    tag = tagJpaRepository.findBytagContent(tagtext).get();
+                }
+                  post.getTagList().add(tag);
+                  tag.getPostList().add(post);
+           
+            }
+        }
+
+        return ResponseEntity.ok(postJpaRepository.save(post));
 
     }
-
-   
 
     @Override
     public ResponseEntity<Void> deletePost(Long idPost) {
@@ -62,7 +103,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public  List<ShowPostDTO> getAllPosts() {
+    public List<ShowPostDTO> getAllPosts() {
 
         List<Post> postList = postJpaRepository.findAll();
         return postList.stream()
@@ -70,30 +111,27 @@ public class PostServiceImpl implements PostService {
                 .collect(Collectors.toList());
     }
 
-    
-    
     @Override
     public List<ShowPostDTO> getPostsByUserId(Long userId) {
-                Users user = userServiceImpl.getUserNormalbyId(userId);
+        Users user = userServiceImpl.getUserNormalbyId(userId);
 
-          List<Post> postList = postJpaRepository.findByuser(user);
+        List<Post> postList = postJpaRepository.findByuser(user);
         return postList.stream()
                 .map(Post::toShowPostDTO)
                 .collect(Collectors.toList());
     }
 
-     public List<Post> getPostsByUserIdNoraml(Long userId) {
+    public List<Post> getPostsByUserIdNoraml(Long userId) {
         Users user = userServiceImpl.getUserNormalbyId(userId);
-          List<Post> postList = postJpaRepository.findByuser(user);
+        List<Post> postList = postJpaRepository.findByuser(user);
         return postList;
-                
+
     }
 
-     public Post getPostsByPostid(Long postId) {
-         Post postid =  postJpaRepository.findById(postId).get();
+    public Post getPostsByPostid(Long postId) {
+        Post postid = postJpaRepository.findById(postId).get();
         return postid;
-                
+
     }
- 
-    
+
 }

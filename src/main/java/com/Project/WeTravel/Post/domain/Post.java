@@ -170,47 +170,66 @@ public class Post {
 
     }
 
-    public CreatePostDTO toDTO() {
-        CreatePostDTO createPostDTO = new CreatePostDTO();
-        createPostDTO.setUser(this.user);
-        createPostDTO.setDescription(this.description);
-        return createPostDTO;
+    public void setTagList(List<Tag> tagList) {
+        this.tagList = tagList;
     }
 
-    public static Post fromDTO(CreatePostDTO createPostDTO) {
+    public void setLikeList(List<Likes> likeList) {
+        this.likeList = likeList;
+    }
+
+    public void setCommentList(List<Comment> commentList) {
+        this.commentList = commentList;
+    }
+
+    public void setPhotolist(List<Photo> photolist) {
+        this.photolist = photolist;
+    }
+
+//    public static Post fromDTO(CreatePostDTO createPostDTO) {
+//        Post post = new Post();
+//        post.setDescription(createPostDTO.getDescription());
+//        post.setCreationDate(createPostDTO.getCreationDate());
+//        post.setUpdatedDate(createPostDTO.getUpdatedDate());
+//        post.setTagList(createPostDTO.getListTag());
+//        post.setPhotolist(createPostDTO.getListPhoto());
+//        return post;
+//
+//    }
+//
+//    public CreatePostDTO toCreatePostDTO() {
+//
+//        CreatePostDTO createPostDTO = new CreatePostDTO();
+//        createPostDTO.setDescription(this.description);
+//        createPostDTO.setCreationDate(this.creationDate);
+//        createPostDTO.setUpdatedDate(this.updatedDate);
+//        createPostDTO.setListTag(this.tagList);
+//        createPostDTO.setListPhoto(this.photolist);
+//        return createPostDTO;
+//    }
+
+    public ShowPostDTO toShowPostDTO() {
+        ShowPostDTO showPostDTO = new ShowPostDTO();
+        showPostDTO.setPostid(this.idPost);
+        showPostDTO.setUser(this.user.toDTO());
+        showPostDTO.setDescription(this.description);
+        showPostDTO.setCreationDate(this.creationDate);
+        showPostDTO.setUpdatedDate(this.updatedDate);
+
+        return showPostDTO;
+    }
+
+    public static Post fromDTO(ShowPostDTO showPostDTO) {
         Post post = new Post();
-        post.setUser(createPostDTO.getUser());
-        post.setDescription(createPostDTO.getDescription());
-        post.setCreationDate(createPostDTO.getCreationDate());
-        post.setUpdatedDate(createPostDTO.getUpdatedDate());
+        post.setIdPost(showPostDTO.getPostid());
+        Users user = Users.fromDTO(showPostDTO.getUser());
+        post.setUser(user);
+        post.setDescription(showPostDTO.getDescription());
+        post.setCreationDate(showPostDTO.getCreationDate());
+        post.setUpdatedDate(showPostDTO.getUpdatedDate());
+
         return post;
     }
-
-public ShowPostDTO toShowPostDTO() {
-    ShowPostDTO showPostDTO = new ShowPostDTO();
-    showPostDTO.setPostid(this.idPost); 
-    showPostDTO.setUser(this.user.toDTO()); 
-    showPostDTO.setDescription(this.description);
-    showPostDTO.setCreationDate(this.creationDate);
-    showPostDTO.setUpdatedDate(this.updatedDate);
-
-    return showPostDTO;
-}
-
-public static Post fromDTO(ShowPostDTO showPostDTO) {
-    Post post = new Post();
-    post.setIdPost(showPostDTO.getPostid()); 
-    Users user = Users.fromDTO(showPostDTO.getUser()); 
-    post.setUser(user);
-    post.setDescription(showPostDTO.getDescription());
-    post.setCreationDate(showPostDTO.getCreationDate());
-    post.setUpdatedDate(showPostDTO.getUpdatedDate());
-
-    return post;
-}
-
-
-
 
     @Override
     public String toString() {

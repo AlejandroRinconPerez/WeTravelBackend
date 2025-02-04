@@ -44,6 +44,11 @@ public class TagServiceIpml implements TagService {
         }
     }
 
+    
+    public Boolean existingByContent(String tagContent){
+        return tagJpaRepository.existsByTagContent(tagContent);
+    }
+    
     @Override
     public ResponseEntity<Tag> createTag(Tag tag) {
        
