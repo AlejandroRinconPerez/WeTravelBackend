@@ -13,11 +13,13 @@ public interface CommentService {
 
     Boolean hasPostcomment(Post post, Users user);
 
-    ResponseEntity<CommentDTO> createComment(Long idPost, Long idUser, Comment comment);
+    ResponseEntity<CommentDTO> createComment(Long idPost, Comment comment, String email);
 
     void deleteComment(Long idcomment);
-    
+
     ResponseEntity<Comment> findComentBYid(Long idComment);
+
+    ResponseEntity<Comment> saveComment(Comment comment);
 
     void savecomment(Comment comment);
 }

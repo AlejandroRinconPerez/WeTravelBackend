@@ -120,18 +120,16 @@ public class UserServiceImpl implements UserService {
         if (user.getEmail() == null || user.getEmail().trim().isEmpty()) {
             throw new InvalidInputException("El email es requerido");
         }
-        
 
         Users userdaved = userJpaRepositorty.save(user);
         return ResponseEntity.ok(userdaved.toDTO());
     }
 
-    
-    public Users  saveUserEntity(Users user ) {
+    public Users saveUserEntity(Users user) {
         user.setLastLogin(new Date());
-      return userJpaRepositorty.save(user);
+        return userJpaRepositorty.save(user);
     }
-    
+
     @Override
     public ResponseEntity<Void> deleteUser(Long idUser) {
         if (idUser == null || idUser <= 0) {
@@ -148,6 +146,18 @@ public class UserServiceImpl implements UserService {
         } else {
             return ResponseEntity.notFound().build();
         }
+
+    }
+
+    public ResponseEntity<Users> fingUserbyEmail(String email) {
+
+        Users user = userJpaRepositorty.findByemail(email).get();
+        if (user == null) {
+            throw new NotFoundException("User NotFound");
+        }
+
+        UsersDTO userDTO = user.toDTO();
+        return ResponseEntity.ok(user);
 
     }
 

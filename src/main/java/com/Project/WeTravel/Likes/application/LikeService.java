@@ -1,5 +1,6 @@
 package com.Project.WeTravel.Likes.application;
 
+
 import com.Project.WeTravel.Comments.domain.Comment;
 import com.Project.WeTravel.Likes.application.DTO.LikeCommentDTO;
 import com.Project.WeTravel.Likes.application.DTO.LikePostDTO;
@@ -20,7 +21,7 @@ public interface LikeService {
 
     Boolean hasUserLikedComment(Comment comment, Users user);
 
-    ResponseEntity<LikePostDTO> createLikePost(Long idPost, Long idUser);
+    ResponseEntity<LikePostDTO> createLikePost(Long idPost, String  email);
 
-    ResponseEntity<LikeCommentDTO> createLikeComment(Long idComment, Long idUser);
+    ResponseEntity<LikeCommentDTO> createLikeComment(Long idComment, String email);
 }

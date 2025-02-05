@@ -51,19 +51,11 @@ public class Comment {
     public Comment() {
     }
 
-    
-    
-    
-   public Comment(String content) {
+    public Comment(String content) {
         this.content = content;
-        this.createDate = new Date(); 
+        this.createDate = new Date();
     }
 
-    
-    
-    
-    
-    
     public Long getIdComment() {
         return idComment;
     }
@@ -138,9 +130,6 @@ public class Comment {
         this.likeList = likeList;
     }
 
-    
-    
-    
     public CommentDTO toDTO() {
     CommentDTO commentDTO = new CommentDTO();
     commentDTO.setIdComment(this.idComment);
@@ -148,11 +137,19 @@ public class Comment {
     commentDTO.setCreateDate(this.createDate);
     commentDTO.setUserName(this.user.getName());
     commentDTO.setUserProfilePhoto(this.user.getPhoto());
-  
+
+    
+    if (this.likeList != null) {
+        for (Likes item : this.likeList) {
+            LikeCommentDTO like = item.toLikeCommentDTO();
+            commentDTO.getLikes().add(like);
+        }
+    }
+
     return commentDTO;
 }
 
-public static Comment fromDTO(CommentDTO commentDTO) {
+    public static Comment fromDTO(CommentDTO commentDTO) {
     Comment comment = new Comment();
     comment.setIdComment(commentDTO.getIdComment());
     comment.setContent(commentDTO.getContent());
@@ -163,12 +160,17 @@ public static Comment fromDTO(CommentDTO commentDTO) {
     user.setPhoto(commentDTO.getUserProfilePhoto());
     comment.setUser(user);
 
-   
+    // Ensure likes list is not null before iterating
+    if (commentDTO.getLikes() != null) {
+        for (LikeCommentDTO item : commentDTO.getLikes()) {
+            Likes like = Likes.fromLikeCommentDTO(item);
+            comment.getLikeList().add(like);
+        }
+    }
+
     return comment;
 }
 
-   
-    
     @Override
     public String toString() {
         return "Comment{" + "idComment=" + idComment

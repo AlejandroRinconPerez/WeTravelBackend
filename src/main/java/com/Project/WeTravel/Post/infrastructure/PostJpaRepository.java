@@ -54,4 +54,12 @@ public interface PostJpaRepository extends JpaRepository<Post, Long> {
             + "ORDER BY p.creationDate DESC")
     List<Post> findLikedPostsByUserId(@Param("userId") Long userId);
 
+@Query("SELECT p FROM Post p "
+        + "JOIN p.likeList l "
+        + "WHERE l.id = :likeId")
+Post findPostByLikeId(@Param("likeId") Long likeId);
+
+
+
+
 }

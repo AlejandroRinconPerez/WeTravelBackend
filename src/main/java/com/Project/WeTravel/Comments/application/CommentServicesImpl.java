@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -37,6 +38,7 @@ public class CommentServicesImpl implements CommentService {
         this.userServiceImpl = userServiceImpl;
     }
 
+    @Override
     public ResponseEntity<Comment> findComentBYid(Long idComment) {
         if (idComment == null || idComment <= 0) {
             throw new InvalidInputException("ID de comentario inválido");
@@ -48,6 +50,7 @@ public class CommentServicesImpl implements CommentService {
         return ResponseEntity.ok(commentfound);
     }
 
+    @Override
     public ResponseEntity<Comment> saveComment(Comment comment) {
         if (comment == null) {
             throw new InvalidInputException("El comentario no puede ser nulo");
@@ -55,6 +58,7 @@ public class CommentServicesImpl implements CommentService {
         return ResponseEntity.ok(commentJpaRepository.save(comment));
     }
 
+ 
     @Override
     public List<CommentDTO> findAllByPost(Post post) {
         if (post == null) {
@@ -80,6 +84,7 @@ public class CommentServicesImpl implements CommentService {
         return commentDTOList;
     }
 
+   
     @Override
     public Boolean hasPostcomment(Post post, Users user) {
         if (post == null || user == null) {
@@ -89,14 +94,18 @@ public class CommentServicesImpl implements CommentService {
         return commentOPt.isPresent();
     }
 
+    @Override
     public void savecomment(Comment comment) {
         commentJpaRepository.save(comment);
     }
 
-    @Override
-    public ResponseEntity<CommentDTO> createComment(Long idPost, Long idUser, Comment comment) {
 
-        Users user = userServiceImpl.getUserNormalbyId(idUser);
+    @Override
+    public ResponseEntity<CommentDTO> createComment(Long idPost, Comment comment, String email) {
+
+        
+        Users user =  userServiceImpl.fingUserbyEmail(email).getBody();
+        
         Post post = postServiceImpl.getPostsByPostid(idPost);
         if (post == null || user == null) {
             throw new InvalidInputException("Post or user can not be null");
@@ -115,6 +124,7 @@ public class CommentServicesImpl implements CommentService {
         return ResponseEntity.ok(comment.toDTO());
     }
 
+  
     @Override
     public void deleteComment(Long idcomment) {
         if (idcomment == null || idcomment <= 0) {
@@ -131,4 +141,12 @@ public class CommentServicesImpl implements CommentService {
 
     }
 
+    public Comment findCommentByLike(Long idlike){
+      Comment comment =   commentJpaRepository.findCommentByLikeId(idlike);
+    
+        
+        return comment;
+    }
+    
+    
 }

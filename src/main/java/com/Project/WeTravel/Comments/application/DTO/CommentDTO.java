@@ -20,7 +20,7 @@ public class CommentDTO {
     private Date createDate;
     private String userName; 
     private String userProfilePhoto; 
-    private List<LikeCommentDTO> likes;
+        private List<LikeCommentDTO> likes = new ArrayList<>(); 
 
     // Getters y Setters
 
@@ -73,30 +73,30 @@ public class CommentDTO {
     }
 
 
-
-    // Método fromDTO
-    public static Comment fromDTO(CommentDTO commentDTO) {
-        Comment comment = new Comment();
-        comment.setIdComment(commentDTO.getIdComment());
-        comment.setContent(commentDTO.getContent());
-        comment.setCreateDate(commentDTO.getCreateDate());
-
-        Users user = new Users();
-        user.setName(commentDTO.getUserName());
-        user.setPhoto(commentDTO.getUserProfilePhoto());
-        comment.setUser(user);
-
-        // Aquí solo se configura la lista de likes para después ser usada
-        List<Likes> likes = new ArrayList<>();
-        for (LikeCommentDTO likeCommentDTO : commentDTO.getLikes()) {
-            Likes like = Likes.fromLikeCommentDTO(likeCommentDTO);
-            like.setComment(comment); // Establecer la relación inversa
-            likes.add(like);
-        }
-        comment.setLikeList(likes);
-
-        return comment;
-    }
+//
+//    // Método fromDTO
+//    public static Comment fromDTO(CommentDTO commentDTO) {
+//        Comment comment = new Comment();
+//        comment.setIdComment(commentDTO.getIdComment());
+//        comment.setContent(commentDTO.getContent());
+//        comment.setCreateDate(commentDTO.getCreateDate());
+//
+//        Users user = new Users();
+//        user.setName(commentDTO.getUserName());
+//        user.setPhoto(commentDTO.getUserProfilePhoto());
+//        comment.setUser(user);
+//
+//        // Aquí solo se configura la lista de likes para después ser usada
+//        List<Likes> likes = new ArrayList<>();
+//        for (LikeCommentDTO likeCommentDTO : commentDTO.getLikes()) {
+//            Likes like = Likes.fromLikeCommentDTO(likeCommentDTO);
+//            like.setComment(comment); 
+//            likes.add(like);
+//        }
+//        comment.setLikeList(likes);
+//
+//        return comment;
+//    }
     
     
     @Override

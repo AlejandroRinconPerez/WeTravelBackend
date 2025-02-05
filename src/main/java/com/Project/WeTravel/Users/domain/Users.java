@@ -263,7 +263,7 @@ public class Users {
         usersDTO.setCreationDate(this.creationDate);
         usersDTO.setEditionDate(this.editionDate);
         usersDTO.setName(this.name);
-        usersDTO.setIdUser(this.idUser);
+        
         usersDTO.setEmail(this.email);
         usersDTO.setPhoto(this.photo);
         usersDTO.setUserName(this.getUserName());
@@ -282,7 +282,7 @@ public class Users {
         user.setName(usersDTO.getName());
         user.setLastLogin(usersDTO.getLastLogin());
         user.setPhoto(usersDTO.getPhoto());
-        user.setIdUser(usersDTO.getIdUser());
+       
         user.setUserName(usersDTO.getUserName());
         return user;
     }
