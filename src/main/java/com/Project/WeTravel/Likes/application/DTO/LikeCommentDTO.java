@@ -18,6 +18,9 @@ public class LikeCommentDTO {
     private String userName; 
     private String userProfilePhoto; 
 
+    public LikeCommentDTO() {
+    }
+
 
 
     public Long getIdLike() {

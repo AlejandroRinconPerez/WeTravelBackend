@@ -14,7 +14,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "Users")
+@Table(name = "Users")           
 public class Users {
 
     @Id

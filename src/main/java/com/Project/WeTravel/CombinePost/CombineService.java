@@ -114,7 +114,50 @@ public class CombineService {
     }    
     
     
+        public List<CombinePostDTO> findAllCombineDTOFollow(Long idUser) {
+        
+            Users user = userServiceImpl.getUserNormalbyId(idUser);
+            user.getFollowedList();
+            
+            
+            
+            
+            
+        List<CombinePostDTO> listPostFinal = new ArrayList();
+
+        // Lista de todos los post en el sistema estos no tienen niu like ni comments ni tag 
+        List<ShowPostDTO> postonlylist = postServiceImpl.getAllPosts();
+
+        //  iteramos sobre cada elemento de la lista de los post sin elementos 
+        for (int i = 0; i < postonlylist.size(); i++) {
+            // declaramos en cada iteracion un objeto combinado     
+            CombinePostDTO combinePostDTO = new CombinePostDTO();
+
+            // le asigamos un ShowpostDTO  a ese objeto combiando 
+            combinePostDTO.setShowPostDTO(postonlylist.get(i));
+            // de cada DTOPost saco el Post id 
+            Long idPost = postonlylist.get(i).getPostid();
+
+            // Debo encontrar cada Post pore id 
+            Post postFound = postServiceImpl.getPostsByPostid(idPost);
+
+            // aca post tiene una lista de fotos debo sacarla 
+            combinePostDTO.setPhotoDTOurl(photoServiceImpl.findByPost(postFound));
+            // traigo la lista de tags por post 
+            combinePostDTO.setTagDTO(tagServiceIpml.getAllTagsByPost(postFound));
+
+            // Ahora traigo la lista de likes por  cada post 
+            combinePostDTO.setLikePostDTO(likeServiceImpl.findAllByPost(postFound));
+            
+            combinePostDTO.setCommentDTO(commentServicesImpl.findAllByPost(postFound));
+            
+            listPostFinal.add(combinePostDTO);
+        }
+        return listPostFinal;
+    }    
     
-    
+        
+        
+        
     
 }

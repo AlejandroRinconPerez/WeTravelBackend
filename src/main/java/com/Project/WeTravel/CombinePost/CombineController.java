@@ -16,7 +16,7 @@ public class CombineController {
 
     final CombineService combineService;
 
-    @Autowired
+    @Autowired 
     public CombineController(CombineService combineService) {
         this.combineService = combineService;
     }

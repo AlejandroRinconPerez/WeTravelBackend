@@ -6,6 +6,11 @@ package com.Project.WeTravel.Post.application;
 
 import com.Project.WeTravel.Photo.application.PhotoServiceImpl;
 import com.Project.WeTravel.CombinePost.CombinePostDTO;
+import com.Project.WeTravel.Comments.application.DTO.CommentDTO;
+import com.Project.WeTravel.Comments.domain.Comment;
+import com.Project.WeTravel.Likes.application.DTO.LikePostDTO;
+import com.Project.WeTravel.Likes.domain.Likes;
+import com.Project.WeTravel.Photo.application.DTO.PhotoDTOurl;
 import com.Project.WeTravel.Photo.domain.Photo;
 import com.Project.WeTravel.Photo.infrastructure.PhotoJpaRepository;
 import com.Project.WeTravel.Post.application.DTO.DTO.CreatePostDTO;
@@ -20,6 +25,7 @@ import com.Project.WeTravel.Users.application.UserServiceImpl;
 import com.Project.WeTravel.Users.domain.Users;
 import com.Project.WeTravel.Utilities.exceptions.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -51,8 +57,7 @@ public class PostServiceImpl implements PostService {
         }
         List<Photo> photoList = new ArrayList();
         List<Tag> tagList = new ArrayList();
-        
-        
+
         Users user = userServiceImpl.getUserNormalbyId(iduser);
         if (user == null) {
             throw new NotFoundException("Users has not been found");
@@ -74,15 +79,15 @@ public class PostServiceImpl implements PostService {
 
         if (createPostDTO.getListTag() != null && !createPostDTO.getListTag().isEmpty()) {
             for (String tagtext : createPostDTO.getListTag()) {
-                 Tag tag = new Tag(tagtext);
-                if(!tagJpaRepository.existsByTagContent(tagtext)){
-                  tagJpaRepository.save(tag); // lo persistimos
+                Tag tag = new Tag(tagtext);
+                if (!tagJpaRepository.existsByTagContent(tagtext)) {
+                    tagJpaRepository.save(tag); // lo persistimos
                 } else {
                     tag = tagJpaRepository.findBytagContent(tagtext).get();
                 }
-                  post.getTagList().add(tag);
-                  tag.getPostList().add(post);
-           
+                post.getTagList().add(tag);
+                tag.getPostList().add(post);
+
             }
         }
 
@@ -90,15 +95,10 @@ public class PostServiceImpl implements PostService {
 
     }
 
-    
-    
-    public void createPost(Post post){
+    public void createPost(Post post) {
         postJpaRepository.save(post);
     }
-    
-    
-    
-    
+
     @Override
     public ResponseEntity<Void> deletePost(Long idPost) {
 
@@ -120,16 +120,6 @@ public class PostServiceImpl implements PostService {
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public List<ShowPostDTO> getPostsByUserId(Long userId) {
-        Users user = userServiceImpl.getUserNormalbyId(userId);
-
-        List<Post> postList = postJpaRepository.findByuser(user);
-        return postList.stream()
-                .map(Post::toShowPostDTO)
-                .collect(Collectors.toList());
-    }
-
     public List<Post> getPostsByUserIdNoraml(Long userId) {
         Users user = userServiceImpl.getUserNormalbyId(userId);
         List<Post> postList = postJpaRepository.findByuser(user);
@@ -141,6 +131,113 @@ public class PostServiceImpl implements PostService {
         Post postid = postJpaRepository.findById(postId).get();
         return postid;
 
+    }
+
+    // METODOS NUEVOS CON FILTRO DE USUARIOS ACTIVOS EN GENERAL 
+    // Posts por usuario activo ordenados por fecha
+    public List<CombinePostDTO> findByUserOrderByCreationDateDesc(Long idUser) {
+        Users user = userServiceImpl.getUserNormalbyId(idUser);
+        List<Post> postList = postJpaRepository.findByUserOrderByCreationDateDesc(user);
+        return getAllPosts2(postList);
+    }
+
+    
+    
+    
+    //Posts por tag (usuario activo) ordenados por fecha
+    public List<CombinePostDTO> findPostsByTagContent(String tagtext) {
+        
+
+        List<Post> postList = postJpaRepository.findPostsByTagContent(tagtext);
+        return getAllPosts2(postList);
+    }
+    // Posts en rango de fechas (usuario activo) ordenados por fecha
+
+    public List<CombinePostDTO> findByCreationDateBetweenOrderByCreationDateDesc(Date date1, Date date2) {
+        List<Post> postList = postJpaRepository.findByCreationDateBetweenOrderByCreationDateDesc(date1, date2);
+        return getAllPosts2(postList);
+    }
+
+    // Todos los posts (usuarios activos) ordenados por likes
+    public List<CombinePostDTO> findAllOrderByLikesDesc() {
+        List<Post> postList = postJpaRepository.findAllOrderByLikesDesc();
+        return getAllPosts2(postList);
+    }
+
+// Metodos de Get Post Para Seguidos solamente 
+    public List<CombinePostDTO> findFollowedUsersPostsOrderByCreationDateDesc(Long idUser) {
+        Users user = userServiceImpl.getUserNormalbyId(idUser);
+
+        List<Post> postList = postJpaRepository.findFollowedUsersPostsOrderByCreationDateDesc(user);
+        return getAllPosts2(postList);
+    }
+
+    public List<CombinePostDTO> findFollowedUsersPostsByTagOrderByCreationDateDesc(Long idUser, String tagText) {
+
+        Users user = userServiceImpl.getUserNormalbyId(idUser);
+        Tag tag = tagJpaRepository.findBytagContent(tagText).get();
+        List<Post> postList = postJpaRepository.findFollowedUsersPostsByTagOrderByCreationDateDesc(tag, user);
+        return getAllPosts2(postList);
+    }
+
+    public List<CombinePostDTO> findFollowedUsersPostsOrderByLikesDesc(Long idUser) {
+        Users user = userServiceImpl.getUserNormalbyId(idUser);
+        List<Post> postList = postJpaRepository.findFollowedUsersPostsOrderByLikesDesc(user);
+        return getAllPosts2(postList);
+    }
+
+    
+    
+    
+  
+    
+    
+    
+    
+//  esta funcion sirve para convertir a cualquier lista de post en un post DTO  
+    public List<CombinePostDTO> getAllPosts2(List<Post> postList) {
+        // Lista Final Para el REtur
+        List<CombinePostDTO> combinePost = new ArrayList();
+        for (Post postItem : postList) {
+
+            CombinePostDTO combinePostFinal = new CombinePostDTO();
+            List< PhotoDTOurl> photoDTOurl = new ArrayList();
+            List< LikePostDTO> likePostDTO = new ArrayList();
+            List< CommentDTO> commentDTO = new ArrayList();
+            List<Tag> taglist = new ArrayList();
+            // Photo
+            List<Photo> photoList = postItem.getPhotolist();
+
+            for (Photo photoItem : photoList) {
+                PhotoDTOurl phototosaveDTO = photoItem.toPhotoDTOurl();
+                photoDTOurl.add(phototosaveDTO);
+            }
+            // showPostDTO
+            ShowPostDTO showPostDTO = postItem.toShowPostDTO();
+            // Tag 
+            taglist = postItem.getTagList();
+            // Like
+            for (Likes likeitem : postItem.getLikeList()) {
+
+                likePostDTO.add(likeitem.toLikePostDTO());
+            }
+            // Comment
+            for (Comment commentItem : postItem.getCommentList()) {
+                commentDTO.add(commentItem.toDTO());
+            }
+            combinePostFinal.setTagDTO(taglist);
+            combinePostFinal.setPhotoDTOurl(photoDTOurl);
+            combinePostFinal.setCommentDTO(commentDTO);
+            combinePostFinal.setLikePostDTO(likePostDTO);
+            combinePostFinal.setShowPostDTO(showPostDTO);
+            combinePost.add(combinePostFinal);
+        }
+        return combinePost;
+    }
+
+    @Override
+    public List<ShowPostDTO> getPostsByUserId(Long idUser) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
 }

@@ -95,7 +95,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseEntity<UsersDTO> createUser(CreateUserDTO createUserDTO) {
         if (createUserDTO == null) {
-            throw new NotFoundException("No info in the body try a");
+            throw new NotFoundException("No info in the body try again");
         }
         if (createUserDTO.getUserName() == null || createUserDTO.getUserName().trim().isEmpty()) {
             throw new InvalidInputException("El nombre de usuario es requerido");

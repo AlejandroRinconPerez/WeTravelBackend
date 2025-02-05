@@ -18,9 +18,18 @@ public class LikePostDTO {
 
     // Getters y Setters
 
+    
+    
+     public LikePostDTO() {
+    }
+    
+     
+     
     public Long getIdLike() {
         return idLike;
     }
+
+   
 
     public void setIdLike(Long idLike) {
         this.idLike = idLike;
