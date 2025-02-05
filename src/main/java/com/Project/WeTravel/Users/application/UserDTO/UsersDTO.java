@@ -16,7 +16,7 @@ public class UsersDTO {
     private Date lastLogin;
     private Date editionDate;
 
-    
+
     
     public UsersDTO() {
         
@@ -52,6 +52,14 @@ public class UsersDTO {
         return biography;
     }
 
+    public Date getEditionDate() {
+        return editionDate;
+    }
+
+    public void setEditionDate(Date editionDate) {
+        this.editionDate = editionDate;
+    }
+
     public void setBiography(String biography) {
         this.biography = biography;
     }
@@ -80,13 +88,7 @@ public class UsersDTO {
         this.lastLogin = lastLogin;
     }
 
-    public Date getEditionDate() {
-        return editionDate;
-    }
-
-    public void setEditionDate(Date editionDate) {
-        this.editionDate = editionDate;
-    }
+ 
 
     public String getUserName() {
         return userName;

@@ -101,7 +101,7 @@ public class PostController {
     
 
 
-    //  post por likes 
+
 @GetMapping("/like")
     public ResponseEntity<List<CombinePostDTO>> getAllLikes() {
         try {
