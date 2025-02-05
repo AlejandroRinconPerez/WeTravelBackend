@@ -182,7 +182,11 @@ public class PostServiceImpl implements PostService {
         return getAllPosts2(postList);
     }
     
-    
+
+ public List<CombinePostDTO> findPostsLikedByUser(Long id) {
+        List<Post> postList = postJpaRepository.findLikedPostsByUserId(id);
+        return getAllPosts2(postList);
+    }
     
  
   // Encontrar post by comment 

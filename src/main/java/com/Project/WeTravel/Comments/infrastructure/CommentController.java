@@ -31,7 +31,7 @@ private final CommentServicesImpl commentServicesImpl;
 // Encontrar Comentario npor id 
     
     
-    @GetMapping("/findId/{ idComment}")
+    @GetMapping("/findId/{idComment}")
     public ResponseEntity<Comment> findComentBYid(@PathVariable Long idComment){
        return commentServicesImpl.findComentBYid(idComment);
     }

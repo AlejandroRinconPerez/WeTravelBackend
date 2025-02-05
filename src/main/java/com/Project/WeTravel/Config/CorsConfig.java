@@ -19,14 +19,11 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:5173" , "http://127.0.0.1:5500") // Esta es la direccion que tiene el front,  
+                        .allowedOrigins("http://127.0.0.1:5500/")
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true);
 
-                // Permitir el acceso a los endpoints de Swagger
-                registry.addMapping("/doc/swagger-ui.html").allowedOrigins("http://localhost:5173", "http://localhost:8080");
-                registry.addMapping("/v3/api-docs/**").allowedOrigins("http://localhost:5173",  "http://localhost:8080");
             }
         };
     }

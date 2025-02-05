@@ -2,6 +2,7 @@ package com.Project.WeTravel.Notification.domain;
 
 import com.Project.WeTravel.Comments.domain.Comment;
 import com.Project.WeTravel.Folllow.domain.Follow;
+import com.Project.WeTravel.Folllow.domain.FollowDTO;
 import com.Project.WeTravel.Likes.domain.Likes;
 import com.Project.WeTravel.Users.domain.Users;
 import jakarta.persistence.*;
@@ -99,9 +100,42 @@ public class Notification {
         this.like = like;
     }
 
+    public NotificationDTO toNotificationDTO() {
+        NotificationDTO notificationDto = new NotificationDTO();
+
+        notificationDto.setNotificationDate(this.getNotificationDate());
+        notificationDto.setStatus(this.status);
+        notificationDto.setIdNotification(this.idNotification);
+        notificationDto.setToUser(this.toUser);
+
+        // Inicializa relaciones perezosas si es necesario
+        if (this.follow != null) {
+            this.follow.getIdData(); // Inicializa la relación perezosa
+        }
+        if (this.comment != null) {
+            this.comment.getIdComment(); // Inicializa la relación perezosa
+        }
+        if (this.like != null) {
+            this.like.getIdLike(); // Inicializa la relación perezosa
+        }
+
+        return notificationDto;
+    }
+
+    public static Notification fromDTO(NotificationDTO notificationDTO) {
+        Notification notification = new Notification();
+
+        notification.setNotificationDate(notificationDTO.getNotificationDate());
+        notification.setStatus(notificationDTO.getStatus());
+        notification.setIdNotification(notificationDTO.getIdNotification());
+        notification.setToUser(notificationDTO.getToUser());
+
+        return notification;
+    }
+
     @Override
     public String toString() {
-        return "Notification{" + "idNotification=" + idNotification + ", status=" + status + ", notificationDate=" + notificationDate + ", follow=" + follow + ", toUser=" + toUser + '}';
+        return "Notification{" + "idNotification=" + idNotification + ", status=" + status + ", notificationDate=" + notificationDate + ", follow=" + follow + ", comment=" + comment + ", like=" + like + ", toUser=" + toUser + '}';
     }
 
 }
