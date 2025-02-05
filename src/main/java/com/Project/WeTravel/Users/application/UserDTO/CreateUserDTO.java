@@ -8,12 +8,14 @@ public class CreateUserDTO {
     private String userName;
     private String email;
     private String password;
+    
  
 
     public CreateUserDTO() {
+       
     }
-
     
+
     
     public String getName() {
         return name;

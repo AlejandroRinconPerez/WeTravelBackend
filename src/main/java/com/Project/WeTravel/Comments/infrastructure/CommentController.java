@@ -7,8 +7,10 @@ import com.Project.WeTravel.Comments.domain.Comment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,6 +26,17 @@ private final CommentServicesImpl commentServicesImpl;
     public CommentController(CommentServicesImpl commentServicesImpl) {
         this.commentServicesImpl = commentServicesImpl;
     }
+    
+    
+// Encontrar Comentario npor id 
+    
+    
+    @GetMapping("/findId/{ idComment}")
+    public ResponseEntity<Comment> findComentBYid(@PathVariable Long idComment){
+       return commentServicesImpl.findComentBYid(idComment);
+    }
+    
+    
     
     
     
@@ -43,7 +56,16 @@ private final CommentServicesImpl commentServicesImpl;
      commentServicesImpl.deleteComment(id);
  }
  
+ @PutMapping
  
+ public ResponseEntity<CommentDTO> updateComment(@PathVariable Long idComment, @RequestBody Comment commenttext){
+      Comment commentToUpdate =  commentServicesImpl.findComentBYid(idComment).getBody();
+      commentToUpdate.setContent(commenttext.getContent());
+      CommentDTO commenttoretur= commentServicesImpl.saveComment(commenttext).getBody().toDTO();
+      return   ResponseEntity.ok(commenttoretur);
+     
+     
+ }
  
     
 }

@@ -135,6 +135,7 @@ public class PostServiceImpl implements PostService {
 
     // METODOS NUEVOS CON FILTRO DE USUARIOS ACTIVOS EN GENERAL 
     // Posts por usuario activo ordenados por fecha
+    // ya esta
     public List<CombinePostDTO> findByUserOrderByCreationDateDesc(Long idUser) {
         Users user = userServiceImpl.getUserNormalbyId(idUser);
         List<Post> postList = postJpaRepository.findByUserOrderByCreationDateDesc(user);
@@ -142,9 +143,14 @@ public class PostServiceImpl implements PostService {
     }
 
     
-    
+        public List<CombinePostDTO> getAllPost() {
+        List<Post> postList = postJpaRepository.findAll();
+        return getAllPosts2(postList);
+    }
+        
     
     //Posts por tag (usuario activo) ordenados por fecha
+    // ya etsa 
     public List<CombinePostDTO> findPostsByTagContent(String tagtext) {
         
 
@@ -152,44 +158,38 @@ public class PostServiceImpl implements PostService {
         return getAllPosts2(postList);
     }
     // Posts en rango de fechas (usuario activo) ordenados por fecha
+//este no se usara 
 
-    public List<CombinePostDTO> findByCreationDateBetweenOrderByCreationDateDesc(Date date1, Date date2) {
-        List<Post> postList = postJpaRepository.findByCreationDateBetweenOrderByCreationDateDesc(date1, date2);
-        return getAllPosts2(postList);
-    }
-
+    
     // Todos los posts (usuarios activos) ordenados por likes
     public List<CombinePostDTO> findAllOrderByLikesDesc() {
         List<Post> postList = postJpaRepository.findAllOrderByLikesDesc();
         return getAllPosts2(postList);
     }
 
-// Metodos de Get Post Para Seguidos solamente 
-    public List<CombinePostDTO> findFollowedUsersPostsOrderByCreationDateDesc(Long idUser) {
-        Users user = userServiceImpl.getUserNormalbyId(idUser);
 
-        List<Post> postList = postJpaRepository.findFollowedUsersPostsOrderByCreationDateDesc(user);
-        return getAllPosts2(postList);
-    }
-
-    public List<CombinePostDTO> findFollowedUsersPostsByTagOrderByCreationDateDesc(Long idUser, String tagText) {
-
-        Users user = userServiceImpl.getUserNormalbyId(idUser);
-        Tag tag = tagJpaRepository.findBytagContent(tagText).get();
-        List<Post> postList = postJpaRepository.findFollowedUsersPostsByTagOrderByCreationDateDesc(tag, user);
-        return getAllPosts2(postList);
-    }
-
-    public List<CombinePostDTO> findFollowedUsersPostsOrderByLikesDesc(Long idUser) {
-        Users user = userServiceImpl.getUserNormalbyId(idUser);
-        List<Post> postList = postJpaRepository.findFollowedUsersPostsOrderByLikesDesc(user);
+    
+       public List<CombinePostDTO> findPostsByUserId(Long userid) {
+        List<Post> postList = postJpaRepository.findPostsByUserId(userid);
         return getAllPosts2(postList);
     }
 
     
     
+
+ public List<CombinePostDTO> findPostsByActiveUsers() {
+        List<Post> postList = postJpaRepository.findPostsByActiveUsers();
+        return getAllPosts2(postList);
+    }
     
-  
+    
+    
+ 
+  // Encontrar post by comment 
+ public Post getPostbycomment(Comment comment){
+     return   postJpaRepository.findByCommentInList(comment);
+   
+ }
     
     
     

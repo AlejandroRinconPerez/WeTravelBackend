@@ -105,6 +105,8 @@ public class UserServiceImpl implements UserService {
             throw new InvalidInputException("El email es requerido");
         }
         Users usercreated = Users.fromDTOCreate(createUserDTO);
+        usercreated.setActive(true);
+        usercreated.setCreationDate(new Date());
         usercreated = userJpaRepositorty.save(usercreated);
         return ResponseEntity.ok(usercreated.toDTO());
 
@@ -118,6 +120,7 @@ public class UserServiceImpl implements UserService {
         if (user.getEmail() == null || user.getEmail().trim().isEmpty()) {
             throw new InvalidInputException("El email es requerido");
         }
+        
 
         Users userdaved = userJpaRepositorty.save(user);
         return ResponseEntity.ok(userdaved.toDTO());
@@ -125,6 +128,7 @@ public class UserServiceImpl implements UserService {
 
     
     public Users  saveUserEntity(Users user ) {
+        user.setLastLogin(new Date());
       return userJpaRepositorty.save(user);
     }
     

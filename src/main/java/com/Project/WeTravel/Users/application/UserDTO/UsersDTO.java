@@ -9,15 +9,29 @@ public class UsersDTO {
     private String name;
     private String email;
     private String userName;
+    private Long idUser;
     private String biography;
     private String photo;
     private Date creationDate;
     private Date lastLogin;
     private Date editionDate;
 
+    
+    
     public UsersDTO() {
+        
     }
 
+    public Long getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(Long idUser) {
+        this.idUser = idUser;
+    }
+
+    
+    
     public String getName() {
         return name;
     }

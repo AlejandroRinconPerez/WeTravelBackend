@@ -72,6 +72,7 @@ public class PostController {
         return postServiceImpl.deletePost(id);
     }
 
+    //  post  por usuario los que yo sigo 
     @GetMapping("/user/{idUser}")
     public ResponseEntity<List<CombinePostDTO>> getAllPostsUser(@PathVariable Long idUser) {
         try {
@@ -84,22 +85,88 @@ public class PostController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ArrayList<>());
         }
     }
-
+//  post por tag 
 @GetMapping("/tag/{tag}")
     public ResponseEntity<List<CombinePostDTO>> getAllPostTags(@PathVariable String tag) {
         try {
             List<CombinePostDTO> listaPost = postServiceImpl.findPostsByTagContent(tag);
             return ResponseEntity.ok(listaPost);
         } catch (Exception e) {
-            // Log the exception details
+       
             e.printStackTrace();
-            // You can also log a custom message
+       
             System.err.println("Error fetching posts by tag: " + tag);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ArrayList<>());
         }}
     
+
+
+    //  post por likes 
+@GetMapping("/like")
+    public ResponseEntity<List<CombinePostDTO>> getAllLikes() {
+        try {
+            List<CombinePostDTO> listaPost = postServiceImpl.findAllOrderByLikesDesc();
+            return ResponseEntity.ok(listaPost);
+        } catch (Exception e) {
+       
+            e.printStackTrace();
+          
+            System.err.println("Error fetching the post with likes  ");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ArrayList<>());
+        }}
     
 
+// Todos los post todos sin verificqr  uusrios 
+    @GetMapping("post")
+    public ResponseEntity<List<CombinePostDTO>> getAllL() {
+        try {
+            List<CombinePostDTO> listaPost = postServiceImpl.getAllPost();
+            return ResponseEntity.ok(listaPost);
+        } catch (Exception e) {
+       
+            e.printStackTrace();
+          
+            System.err.println("Error fetching the post with likes  ");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ArrayList<>());
+        }}
+
+// Todos los post pero que el usuasrio este activado 
     
+    @GetMapping
+    public ResponseEntity<List<CombinePostDTO>> findPostsByActiveUsers() {
+        try {
+            List<CombinePostDTO> listaPost = postServiceImpl.findPostsByActiveUsers();
+            return ResponseEntity.ok(listaPost);
+        } catch (Exception e) {
+       
+            e.printStackTrace();
+          
+            System.err.println("Error fetching the post  ");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ArrayList<>());
+        }}
+
+
+
+// Post de los que yo sigo 
+    
+   @GetMapping("/my/{idUser}")
+    public ResponseEntity<List<CombinePostDTO>> findPostsByUserId(@PathVariable Long idUser) {
+        try {
+            List<CombinePostDTO> listaPost = postServiceImpl.findPostsByUserId(idUser);
+            return ResponseEntity.ok(listaPost);
+        } catch (Exception e) {
+       
+            e.printStackTrace();
+          
+            System.err.println("Error fetching the post  ");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ArrayList<>());
+        }}
+
+
+
+
+
+
+
 
 }

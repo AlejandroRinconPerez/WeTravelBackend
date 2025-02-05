@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.Project.WeTravel.Comments.application;
 
 import com.Project.WeTravel.Comments.application.DTO.CommentDTO;
@@ -42,11 +38,21 @@ public class CommentServicesImpl implements CommentService {
     }
 
     public ResponseEntity<Comment> findComentBYid(Long idComment) {
+        if (idComment == null || idComment <= 0) {
+            throw new InvalidInputException("ID de comentario inválido");
+        }
 
-        Comment commentfound = commentJpaRepository.findById(idComment).get();
+        Comment commentfound = commentJpaRepository.findById(idComment)
+                .orElseThrow(() -> new NotFoundException("Comentario no encontrado con ID: " + idComment));
 
         return ResponseEntity.ok(commentfound);
+    }
 
+    public ResponseEntity<Comment> saveComment(Comment comment) {
+        if (comment == null) {
+            throw new InvalidInputException("El comentario no puede ser nulo");
+        }
+        return ResponseEntity.ok(commentJpaRepository.save(comment));
     }
 
     @Override
@@ -83,16 +89,16 @@ public class CommentServicesImpl implements CommentService {
         return commentOPt.isPresent();
     }
 
-    public void savecomment(Comment comment ){
+    public void savecomment(Comment comment) {
         commentJpaRepository.save(comment);
     }
-    
+
     @Override
     public ResponseEntity<CommentDTO> createComment(Long idPost, Long idUser, Comment comment) {
 
         Users user = userServiceImpl.getUserNormalbyId(idUser);
         Post post = postServiceImpl.getPostsByPostid(idPost);
-         if (post == null || user == null) {
+        if (post == null || user == null) {
             throw new InvalidInputException("Post or user can not be null");
         }
         if (hasPostcomment(post, user)) {
@@ -102,8 +108,7 @@ public class CommentServicesImpl implements CommentService {
         comment.setPost(post);
         user.getCommentList().add(comment);
         post.getCommentList().add(comment);
-        
-        
+
         postServiceImpl.createPost(post);
         userServiceImpl.saveUserEntity(user);
         commentJpaRepository.save(comment);
@@ -112,12 +117,15 @@ public class CommentServicesImpl implements CommentService {
 
     @Override
     public void deleteComment(Long idcomment) {
-         if (idcomment == null || idcomment <= 0) {
-        throw new InvalidInputException("El ID del comentario no es válido");
-    }
+        if (idcomment == null || idcomment <= 0) {
+            throw new InvalidInputException("El ID del comentario no es válido");
+        }
+
         Optional<Comment> commentYoEliminate = commentJpaRepository.findById(idcomment);
-        if(!commentYoEliminate.isPresent()){
-             throw new NotFoundException("Comment not found with ID: " + idcomment);
+        Post post = postServiceImpl.getPostbycomment(commentYoEliminate.get());
+        post.removeComment(commentYoEliminate.get());
+        if (!commentYoEliminate.isPresent()) {
+            throw new NotFoundException("Comment not found with ID: " + idcomment);
         }
         commentJpaRepository.delete(commentYoEliminate.get());
 
