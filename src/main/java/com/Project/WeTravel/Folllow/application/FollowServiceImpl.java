@@ -50,10 +50,11 @@ public class FollowServiceImpl implements FollowService {
             
             userJpaRepositorty.save(followed);
             userJpaRepositorty.save(follower);
-            followJpaRepository.save(follow);
+           follow= followJpaRepository.save(follow);
+           notificationService.createNotificationFollow(follow);
             
 
-            notificationService.createFollowNotification(follow);
+           
             return follow;
         } else {
             throw new EntityNotFoundException("Follower or followed user not found.");

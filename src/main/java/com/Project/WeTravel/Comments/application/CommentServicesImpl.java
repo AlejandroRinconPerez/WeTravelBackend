@@ -5,6 +5,7 @@ import com.Project.WeTravel.Comments.domain.Comment;
 import com.Project.WeTravel.Comments.infrastructure.CommentJpaRepository;
 import com.Project.WeTravel.Likes.application.DTO.LikeCommentDTO;
 import com.Project.WeTravel.Likes.application.LikeServiceImpl;
+import com.Project.WeTravel.Notification.application.NotificationServiceImp;
 import com.Project.WeTravel.Post.application.PostServiceImpl;
 import com.Project.WeTravel.Post.domain.Post;
 import com.Project.WeTravel.Users.application.UserServiceImpl;
@@ -27,14 +28,23 @@ public class CommentServicesImpl implements CommentService {
     private final LikeServiceImpl likeServiceImpl;
     private final PostServiceImpl postServiceImpl;
     private final UserServiceImpl userServiceImpl;
+    private final NotificationServiceImp notificationServiceImp;
 
-    @Autowired
-    public CommentServicesImpl(CommentJpaRepository commentJpaRepository, @Lazy LikeServiceImpl likeServiceImpl, PostServiceImpl postServiceImpl, UserServiceImpl userServiceImpl) {
+    
+       @Autowired
+    public CommentServicesImpl(CommentJpaRepository commentJpaRepository, LikeServiceImpl likeServiceImpl, PostServiceImpl postServiceImpl, UserServiceImpl userServiceImpl, NotificationServiceImp notificationServiceImp) {
         this.commentJpaRepository = commentJpaRepository;
         this.likeServiceImpl = likeServiceImpl;
         this.postServiceImpl = postServiceImpl;
         this.userServiceImpl = userServiceImpl;
+        this.notificationServiceImp = notificationServiceImp;
     }
+
+    
+    
+    
+ 
+
 
     @Override
     public ResponseEntity<Comment> findComentBYid(Long idComment) {
@@ -111,7 +121,9 @@ public class CommentServicesImpl implements CommentService {
         user.getCommentList().add(comment);
         post.getCommentList().add(comment);
 
-        commentJpaRepository.save(comment);
+        
+       comment = commentJpaRepository.save(comment);
+       notificationServiceImp.createNotificationFollow(comment);
         return ResponseEntity.ok(comment.toDTO());
     }
 
