@@ -105,7 +105,7 @@ public void deleteLike(Long idLike) {
     public ResponseEntity<LikePostDTO> createLikePost(Long idPost, String email) {
         
         Post postlike = postServiceImpl.getPostsByPostid(idPost);
-        Users user = userServiceImpl.fingUserbyEmail(email).getBody();
+        Users user = userServiceImpl.findUserbyEmail(email).getBody();
         
         if (hasUserLikedPost(postlike, user)) {
             return ResponseEntity.badRequest().build();
@@ -127,7 +127,7 @@ public void deleteLike(Long idLike) {
     public ResponseEntity<LikeCommentDTO> createLikeComment(Long idComment, String email) {
         
         Comment commentlike = commentServicesImpl.findComentBYid(idComment).getBody();
-        Users user = userServiceImpl.fingUserbyEmail(email).getBody();
+        Users user = userServiceImpl.findUserbyEmail(email).getBody();
         if (hasUserLikedComment(commentlike, user)) {
             return ResponseEntity.badRequest().build();
         }

@@ -30,8 +30,8 @@ public class PostController {
         this.postServiceImpl = postServiceImpl;
     }
 
-    @PostMapping("{idUser}")
-    public ResponseEntity<Post> CreatePost(@PathVariable Long idUser, @RequestBody CreatePostDTO createPostDTO) {
+    @PostMapping("/{idUser}")
+    public ResponseEntity<ShowPostDTO> CreatePost(@PathVariable Long idUser, @RequestBody CreatePostDTO createPostDTO) {
 
         if (idUser == null) {
             return ResponseEntity.badRequest().build();
@@ -61,7 +61,7 @@ public class PostController {
 //        }
 //    }
 
-    @GetMapping("{userId}/posts")
+    @GetMapping("/{userId}/posts")
     public List<ShowPostDTO> getUserPosts(@PathVariable Long userId) {
         return postServiceImpl.getPostsByUserId(userId);
     }
@@ -168,24 +168,19 @@ public class PostController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ArrayList<>());
         }
     }
-@PutMapping("/{postId}")
-public ResponseEntity<ShowPostDTO> updatePost(
-    @PathVariable Long postId,
-    @RequestBody CreatePostDTO createPostDTO
-) {
-    Post updatedPost = postServiceImpl.updatePost(postId, createPostDTO).getBody();
-    return ResponseEntity.ok(updatedPost.toShowPostDTO());
+
+    @PutMapping("/{postId}")
+    public ResponseEntity<ShowPostDTO> updatePost(
+            @PathVariable Long postId,
+            @RequestBody CreatePostDTO createPostDTO
+    ) {
+        Post updatedPost = postServiceImpl.updatePost(postId, createPostDTO).getBody();
+        return ResponseEntity.ok(updatedPost.toShowPostDTO());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletePost(@PathVariable Long id) {
+        return postServiceImpl.deletePost(id);
+    }
+
 }
-
-@DeleteMapping("/{id}")
-public ResponseEntity<Void> deletePost(@PathVariable Long id) {
-    return postServiceImpl.deletePost(id);
-}
-
-
-}
-
-
-
-
-

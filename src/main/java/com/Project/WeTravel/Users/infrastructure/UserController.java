@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/users")
@@ -28,9 +29,10 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<UsersDTO> getUserById(@PathVariable Long id) {
-        return userService.getUserById(id);
+    @GetMapping("/{email}")
+    public ResponseEntity<UsersDTO> getUserById(@PathVariable String email) {
+        Users user = userService.findUserbyEmail(email).getBody();
+        return ResponseEntity.ok(user.toDTO());
     }
 
     @PostMapping
@@ -43,36 +45,13 @@ public class UserController {
         return userService.deleteUser(id);
     }
 
-    @PutMapping("/update/{idUser}")
+    @PutMapping("/update/{email}")
     public ResponseEntity<UsersDTO> updateUser(
-            @PathVariable Long idUser,
+            @PathVariable String email,
             @RequestBody Users user
     ) {
 
-        Users userToUpdate = userService.getUserNormalbyId(idUser);
-
-        if (userToUpdate == null) {
-            return ResponseEntity.notFound().build();
-        }
-
-        if (user.getName() != null) {
-            userToUpdate.setName(user.getName());
-        }
-        if (user.getPassword() != null) {
-            userToUpdate.setPassword(user.getPassword());
-        }
-        if (user.getBiography() != null) {
-            userToUpdate.setBiography(user.getBiography());
-        }
-        if (user.getPhoto() != null) {
-            userToUpdate.setPhoto(user.getPhoto());
-        }
-        if (user.getActive() != null) {
-            userToUpdate.setActive(user.getActive());
-        }
-        userToUpdate.setEditionDate(new Date());
-        UsersDTO responseDTO = userService.saveUser(userToUpdate).getBody();
-        return ResponseEntity.ok(responseDTO);
+        return userService.updateUserDetails(email, user);
     }
 
 }

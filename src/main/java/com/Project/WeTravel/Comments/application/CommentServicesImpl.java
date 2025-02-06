@@ -5,7 +5,6 @@ import com.Project.WeTravel.Comments.domain.Comment;
 import com.Project.WeTravel.Comments.infrastructure.CommentJpaRepository;
 import com.Project.WeTravel.Likes.application.DTO.LikeCommentDTO;
 import com.Project.WeTravel.Likes.application.LikeServiceImpl;
-import com.Project.WeTravel.Likes.domain.Likes;
 import com.Project.WeTravel.Post.application.PostServiceImpl;
 import com.Project.WeTravel.Post.domain.Post;
 import com.Project.WeTravel.Users.application.UserServiceImpl;
@@ -16,9 +15,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -59,7 +56,6 @@ public class CommentServicesImpl implements CommentService {
         return ResponseEntity.ok(commentJpaRepository.save(comment));
     }
 
- 
     @Override
     public List<CommentDTO> findAllByPost(Post post) {
         if (post == null) {
@@ -85,7 +81,6 @@ public class CommentServicesImpl implements CommentService {
         return commentDTOList;
     }
 
-   
     @Override
     public Boolean hasPostcomment(Post post, Users user) {
         if (post == null || user == null) {
@@ -100,32 +95,26 @@ public class CommentServicesImpl implements CommentService {
         commentJpaRepository.save(comment);
     }
 
-
     @Override
     public ResponseEntity<CommentDTO> createComment(Long idPost, Comment comment, String email) {
 
-        
-        Users user =  userServiceImpl.fingUserbyEmail(email).getBody();
-        
+        Users user = userServiceImpl.findUserbyEmail(email).getBody();
+
         Post post = postServiceImpl.getPostsByPostid(idPost);
         if (post == null || user == null) {
             throw new InvalidInputException("Post or user can not be null");
         }
-        if (hasPostcomment(post, user)) {
-            return ResponseEntity.badRequest().build();
-        }
+
         comment.setUser(user);
         comment.setPost(post);
+        comment.setCreateDate(new Date());
         user.getCommentList().add(comment);
         post.getCommentList().add(comment);
 
-        postServiceImpl.createPost(post);
-        userServiceImpl.saveUserEntity(user);
         commentJpaRepository.save(comment);
         return ResponseEntity.ok(comment.toDTO());
     }
 
-  
     @Override
     public void deleteComment(Long idcomment) {
         if (idcomment == null || idcomment <= 0) {
@@ -142,29 +131,26 @@ public class CommentServicesImpl implements CommentService {
 
     }
 
-    public Comment findCommentByLike(Long idlike){
-      Comment comment =   commentJpaRepository.findCommentByLikeId(idlike);
-    
-        
+    public Comment findCommentByLike(Long idlike) {
+        Comment comment = commentJpaRepository.findCommentByLikeId(idlike);
+
         return comment;
     }
-    
-   
-public ResponseEntity<Comment> updateComment(Long idComment, Comment updatedComment) {
-    if (idComment == null || idComment <= 0) {
-        throw new InvalidInputException("ID de comentario inválido");
+
+    public ResponseEntity<Comment> updateComment(Long idComment, Comment updatedComment) {
+        if (idComment == null || idComment <= 0) {
+            throw new InvalidInputException("ID de comentario inválido");
+        }
+        if (updatedComment == null) {
+            throw new InvalidInputException("El comentario actualizado no puede ser nulo");
+        }
+
+        Comment existingComment = commentJpaRepository.findById(idComment)
+                .orElseThrow(() -> new NotFoundException("Comentario no encontrado con ID: " + idComment));
+
+        existingComment.setContent(updatedComment.getContent());
+        existingComment.setUpDatedAt(new Date());
+
+        return ResponseEntity.ok(commentJpaRepository.save(existingComment));
     }
-    if (updatedComment == null) {
-        throw new InvalidInputException("El comentario actualizado no puede ser nulo");
-    }
-
-    Comment existingComment = commentJpaRepository.findById(idComment)
-            .orElseThrow(() -> new NotFoundException("Comentario no encontrado con ID: " + idComment));
-
-    existingComment.setContent(updatedComment.getContent());
-    existingComment.setUpDatedAt(new Date());
-
-
-    return ResponseEntity.ok(commentJpaRepository.save(existingComment));
-}
 }

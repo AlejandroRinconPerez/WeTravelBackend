@@ -51,7 +51,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public ResponseEntity<Post> createPost(CreatePostDTO createPostDTO, Long iduser) {
+        public ResponseEntity<ShowPostDTO> createPost(CreatePostDTO createPostDTO, Long iduser) {
         if (iduser == null) {
             throw new InvalidInputException("User Id invalid");
         }
@@ -62,11 +62,14 @@ public class PostServiceImpl implements PostService {
         if (user == null) {
             throw new NotFoundException("Users has not been found");
         }
+       
         Post post = new Post();
         post.setDescription(createPostDTO.getDescription());
         post.setCreationDate(createPostDTO.getCreationDate());
         post.setUpdatedDate(createPostDTO.getUpdatedDate());
         post.setUser(user);
+        
+        postJpaRepository.save(post);
 
         if (createPostDTO.getListPhoto() != null && !createPostDTO.getListPhoto().isEmpty()) {
             for (String phototext : createPostDTO.getListPhoto()) {
@@ -91,7 +94,7 @@ public class PostServiceImpl implements PostService {
             }
         }
 
-        return ResponseEntity.ok(postJpaRepository.save(post));
+        return ResponseEntity.ok(postJpaRepository.save(post).toShowPostDTO());
 
     }
 

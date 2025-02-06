@@ -1,9 +1,4 @@
-
 package com.Project.WeTravel.Comments.application.DTO;
-
-
-
-
 
 import com.Project.WeTravel.Comments.domain.Comment;
 import com.Project.WeTravel.Likes.application.DTO.LikeCommentDTO;
@@ -18,12 +13,11 @@ public class CommentDTO {
     private Long idComment;
     private String content;
     private Date createDate;
-    private String userName; 
-    private String userProfilePhoto; 
-        private List<LikeCommentDTO> likes = new ArrayList<>(); 
+    private String userName;
+    private String userProfilePhoto;
+    private List<LikeCommentDTO> likes = new ArrayList<>();
 
     // Getters y Setters
-
     public Long getIdComment() {
         return idComment;
     }
@@ -72,7 +66,6 @@ public class CommentDTO {
         this.likes = likes;
     }
 
-
 //
 //    // Método fromDTO
 //    public static Comment fromDTO(CommentDTO commentDTO) {
@@ -97,17 +90,15 @@ public class CommentDTO {
 //
 //        return comment;
 //    }
-    
-    
     @Override
     public String toString() {
-        return "CommentDTO{" +
-                "idComment=" + idComment +
-                ", content='" + content + '\'' +
-                ", createDate=" + createDate +
-                ", userName='" + userName + '\'' +
-                ", userProfilePhoto='" + userProfilePhoto + '\'' +
-                ", likes=" + likes +
-                '}';
+        return "CommentDTO{"
+                + "idComment=" + idComment
+                + ", content='" + content + '\''
+                + ", createDate=" + createDate
+                + ", userName='" + userName + '\''
+                + ", userProfilePhoto='" + userProfilePhoto + '\''
+                + ", likes=" + likes
+                + '}';
     }
 }

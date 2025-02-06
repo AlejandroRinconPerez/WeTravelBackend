@@ -60,9 +60,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public Boolean verificarUsername(String username, String password, String email) {
         Optional<Users> userOpt = userJpaRepositorty.findByuserName(username);
-     
-        Optional<Users> userOpt2 = userJpaRepositorty.findByemail(email);
 
+        Optional<Users> userOpt2 = userJpaRepositorty.findByemail(email);
 
         return userOpt.isPresent() && userOpt2.isPresent() && userOpt.get().getPassword().equals(password);
     }
@@ -70,7 +69,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Boolean verificarUsername(String username, String password) {
         Optional<Users> userOpt = userJpaRepositorty.findByuserName(username);
-     
+
         return userOpt.isPresent() && userOpt.get().getPassword().equals(password);
     }
 
@@ -143,7 +142,7 @@ public class UserServiceImpl implements UserService {
 
     }
 
-    public ResponseEntity<Users> fingUserbyEmail(String email) {
+    public ResponseEntity<Users> findUserbyEmail(String email) {
 
         Users user = userJpaRepositorty.findByemail(email).get();
         if (user == null) {
@@ -153,6 +152,34 @@ public class UserServiceImpl implements UserService {
         UsersDTO userDTO = user.toDTO();
         return ResponseEntity.ok(user);
 
+    }
+
+    public ResponseEntity<UsersDTO> updateUserDetails(String email, Users user) {
+        Users userToUpdate = findUserbyEmail(email).getBody();
+
+        if (userToUpdate == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        if (user.getName() != null) {
+            userToUpdate.setName(user.getName());
+        }
+        if (user.getPassword() != null) {
+            userToUpdate.setPassword(user.getPassword());
+        }
+        if (user.getBiography() != null) {
+            userToUpdate.setBiography(user.getBiography());
+        }
+        if (user.getPhoto() != null) {
+            userToUpdate.setPhoto(user.getPhoto());
+        }
+        if (user.getActive() != null) {
+            userToUpdate.setActive(user.getActive());
+        }
+        userToUpdate.setEditionDate(new Date());
+
+        UsersDTO responseDTO = saveUser(userToUpdate).getBody();
+        return ResponseEntity.ok(responseDTO);
     }
 
 }

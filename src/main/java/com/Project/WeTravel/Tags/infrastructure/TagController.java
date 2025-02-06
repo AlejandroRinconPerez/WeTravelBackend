@@ -45,7 +45,7 @@ public class TagController {
     }
    
     @PostMapping
-public ResponseEntity<Tag> createTag(@RequestBody  Tag tag) {
+    public ResponseEntity<Tag> createTag(@RequestBody  Tag tag) {
     if (tag.getTagContent() == null || tag.getTagContent().isEmpty()) {
         return ResponseEntity.badRequest().body(null);
     }

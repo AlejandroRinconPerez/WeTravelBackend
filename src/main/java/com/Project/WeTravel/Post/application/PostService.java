@@ -14,7 +14,7 @@ import org.springframework.http.ResponseEntity;
 public interface PostService {
 
    // Crear un nuevo post
-     ResponseEntity<Post> createPost(CreatePostDTO createPostDTO, Long iduser);
+     ResponseEntity<ShowPostDTO> createPost(CreatePostDTO createPostDTO, Long iduser);
 
   
 

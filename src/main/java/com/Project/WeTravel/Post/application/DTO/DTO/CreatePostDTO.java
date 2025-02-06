@@ -1,4 +1,3 @@
-
 package com.Project.WeTravel.Post.application.DTO.DTO;
 
 import com.Project.WeTravel.Likes.application.DTO.LikePostDTO;
@@ -11,24 +10,16 @@ import java.util.List;
 
 public class CreatePostDTO {
 
-  
     private String description;
     private Date creationDate;
     private Date updatedDate;
     private List<String> listTag;
     private List<String> listPhoto;
-    
-    
-    
-    
-    
 
     public CreatePostDTO() {
         this.creationDate = new Date();
         this.updatedDate = new Date();
     }
-
-  
 
     public String getDescription() {
         return description;
@@ -70,14 +61,9 @@ public class CreatePostDTO {
         this.listPhoto = listPhoto;
     }
 
-    public void addTagtoPost(String tag){
+    public void addTagtoPost(String tag) {
         this.listTag.add(tag);
-        
-        
-        
-        
+
     }
-    
-    
-    
+
 }
