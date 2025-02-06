@@ -60,13 +60,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public Boolean verificarUsername(String username, String password, String email) {
         Optional<Users> userOpt = userJpaRepositorty.findByuserName(username);
-        if (userOpt.isEmpty()) {
-            throw new NotFoundException("Username is not valid");
-        }
+     
         Optional<Users> userOpt2 = userJpaRepositorty.findByemail(email);
-        if (userOpt2.isEmpty()) {
-            throw new NotFoundException("Email is not valid");
-        }
+
 
         return userOpt.isPresent() && userOpt2.isPresent() && userOpt.get().getPassword().equals(password);
     }
@@ -74,9 +70,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Boolean verificarUsername(String username, String password) {
         Optional<Users> userOpt = userJpaRepositorty.findByuserName(username);
-        if (userOpt.isEmpty()) {
-            throw new NotFoundException("User has not been foud");
-        }
+     
         return userOpt.isPresent() && userOpt.get().getPassword().equals(password);
     }
 

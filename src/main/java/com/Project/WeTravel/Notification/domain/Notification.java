@@ -4,8 +4,10 @@ import com.Project.WeTravel.Comments.domain.Comment;
 import com.Project.WeTravel.Folllow.domain.Follow;
 import com.Project.WeTravel.Folllow.domain.FollowDTO;
 import com.Project.WeTravel.Likes.domain.Likes;
+import com.Project.WeTravel.Notification.application.DTO.NotificationLikeDTO;
 import com.Project.WeTravel.Users.domain.Users;
 import jakarta.persistence.*;
+import java.sql.Time;
 import java.util.Date;
 
 @Entity
@@ -16,9 +18,14 @@ public class Notification {
     private Long idNotification;
 
     private Boolean status;
+    @Temporal(TemporalType.TIMESTAMP) // Almacena fecha y hora
+    @Column(updatable = false) // No se actualiza después de la creación
     private Date notificationDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @Transient // No se persiste en la base de datos
+    private Long hora; // Solo la hora (se calcula desde notificationDate)
+
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_follow", nullable = true)
     private Follow follow;
 
@@ -35,10 +42,14 @@ public class Notification {
     private Users toUser;
 
     public Notification() {
+        this.status = false;
+        this.notificationDate = new Date();
+        this.hora = notificationDate.getTime();
+
     }
 
-    public Notification(Boolean status, Date notificationDate, Follow follow, Users toUser) {
-        this.status = status;
+    public Notification(Date notificationDate, Follow follow, Users toUser) {
+        this.status = false;
         this.notificationDate = notificationDate;
         this.follow = follow;
         this.toUser = toUser;
@@ -54,6 +65,14 @@ public class Notification {
 
     public Boolean getStatus() {
         return status;
+    }
+
+    public Long getHora() {
+        return hora;
+    }
+
+    public void setHora(Long hora) {
+        this.hora = hora;
     }
 
     public void setStatus(Boolean status) {
@@ -133,6 +152,25 @@ public class Notification {
         return notification;
     }
 
+    public NotificationLikeDTO toDTOLike() {
+
+        NotificationLikeDTO notificationLikeDTO = new NotificationLikeDTO();
+        notificationLikeDTO.setIdLike(this.idNotification);
+        notificationLikeDTO.setEmailreciber(this.like.getUser().getEmail());
+        notificationLikeDTO.setUserPhoto(this.like.getUser().getPhoto());
+        notificationLikeDTO.setIdLike(this.getLike().getIdLike());
+        notificationLikeDTO.setEmailreciber(this.getToUser().getEmail());
+        return notificationLikeDTO;
+
+    }
+// public static Notification fromDTOLike(NotificationLikeDTO notificationLikeDTO){
+//     
+// }
+//    
+    
+    
+    
+    
     @Override
     public String toString() {
         return "Notification{" + "idNotification=" + idNotification + ", status=" + status + ", notificationDate=" + notificationDate + ", follow=" + follow + ", comment=" + comment + ", like=" + like + ", toUser=" + toUser + '}';

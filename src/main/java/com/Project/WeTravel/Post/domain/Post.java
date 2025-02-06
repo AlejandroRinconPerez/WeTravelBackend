@@ -31,7 +31,6 @@ public class Post {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idUser", nullable = false)
-    //@JsonBackReference // si el DTO  no sirve Activar 
     private Users user;
 
     @Column(nullable = false)
@@ -42,16 +41,16 @@ public class Post {
 
     private Date updatedDate;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Photo> photolist;
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<Photo> photolist = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "postList")
+    @ManyToMany(mappedBy = "postList", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Tag> tagList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Likes> likeList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Comment> commentList = new ArrayList<>();
 
     public Post() {

@@ -97,7 +97,7 @@ public class FollowServiceImpl implements FollowService {
                 .map(follow -> toUsersDTO(follow.getFollowed()))
                 .collect(Collectors.toList());
     }
-
+/// Nota Para jaime Ojo con ese DTO  que no es oficial si se quita marca errores 
     private UsersDTO toUsersDTO(Users user) {
         UsersDTO usersDTO = new UsersDTO();
         usersDTO.setUserName(user.getUserName());

@@ -67,12 +67,6 @@ public class PostController {
     }
 
 // Post Pendiente 
-    @DeleteMapping("/{id}")
-
-    public ResponseEntity<Void> deletePost(@PathVariable Long id) {
-        return postServiceImpl.deletePost(id);
-    }
-
     //  post  por usuario los que yo sigo 
     @GetMapping("/user/{idUser}")
     public ResponseEntity<List<CombinePostDTO>> getAllPostsUser(@PathVariable Long idUser) {
@@ -182,4 +176,16 @@ public ResponseEntity<ShowPostDTO> updatePost(
     Post updatedPost = postServiceImpl.updatePost(postId, createPostDTO).getBody();
     return ResponseEntity.ok(updatedPost.toShowPostDTO());
 }
+
+@DeleteMapping("/{id}")
+public ResponseEntity<Void> deletePost(@PathVariable Long id) {
+    return postServiceImpl.deletePost(id);
 }
+
+
+}
+
+
+
+
+

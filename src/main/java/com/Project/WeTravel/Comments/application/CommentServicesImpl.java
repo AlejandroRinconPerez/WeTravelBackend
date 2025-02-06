@@ -13,6 +13,7 @@ import com.Project.WeTravel.Users.domain.Users;
 import com.Project.WeTravel.Utilities.exceptions.InvalidInputException;
 import com.Project.WeTravel.Utilities.exceptions.NotFoundException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -148,5 +149,22 @@ public class CommentServicesImpl implements CommentService {
         return comment;
     }
     
-    
+   
+public ResponseEntity<Comment> updateComment(Long idComment, Comment updatedComment) {
+    if (idComment == null || idComment <= 0) {
+        throw new InvalidInputException("ID de comentario inválido");
+    }
+    if (updatedComment == null) {
+        throw new InvalidInputException("El comentario actualizado no puede ser nulo");
+    }
+
+    Comment existingComment = commentJpaRepository.findById(idComment)
+            .orElseThrow(() -> new NotFoundException("Comentario no encontrado con ID: " + idComment));
+
+    existingComment.setContent(updatedComment.getContent());
+    existingComment.setUpDatedAt(new Date());
+
+
+    return ResponseEntity.ok(commentJpaRepository.save(existingComment));
+}
 }

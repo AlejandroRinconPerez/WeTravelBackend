@@ -95,21 +95,34 @@ public class PostServiceImpl implements PostService {
 
     }
 
+@Override
+public ResponseEntity<Void> deletePost(Long idPost) {
+    Optional<Post> postOpt = postJpaRepository.findById(idPost);
+    if (postOpt.isPresent()) {
+        Post post = postOpt.get();
+
+     
+        List<Tag> tags = post.getTagList();
+        for (Tag tag : tags) {
+            tag.getPostList().remove(post);
+            tagJpaRepository.save(tag);
+        }
+        post.getTagList().clear();
+        postJpaRepository.save(post);
+
+      
+        postJpaRepository.delete(post);
+        return ResponseEntity.noContent().build(); 
+    } else {
+        return ResponseEntity.notFound().build(); 
+    }
+}
+
+
     public void createPost(Post post) {
         postJpaRepository.save(post);
     }
 
-    @Override
-    public ResponseEntity<Void> deletePost(Long idPost) {
-
-        if (postJpaRepository.existsById(idPost)) {
-            postJpaRepository.deleteById(idPost);
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-
-    }
 
     @Override
     public List<ShowPostDTO> getAllPosts() {
