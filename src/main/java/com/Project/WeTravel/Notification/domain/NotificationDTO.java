@@ -3,6 +3,7 @@ package com.Project.WeTravel.Notification.domain;
 import com.Project.WeTravel.Users.domain.Users;
 import java.util.Date;
 
+
 public class NotificationDTO {
 
     private Long idNotification;

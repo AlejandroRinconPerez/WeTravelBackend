@@ -2,7 +2,6 @@ package com.Project.WeTravel.Notification.domain;
 
 import com.Project.WeTravel.Comments.domain.Comment;
 import com.Project.WeTravel.Folllow.domain.Follow;
-import com.Project.WeTravel.Folllow.domain.FollowDTO;
 import com.Project.WeTravel.Likes.domain.Likes;
 import com.Project.WeTravel.Notification.application.DTO.NotificationCommentDTO;
 import com.Project.WeTravel.Notification.application.DTO.NotificationFolowerDTO;

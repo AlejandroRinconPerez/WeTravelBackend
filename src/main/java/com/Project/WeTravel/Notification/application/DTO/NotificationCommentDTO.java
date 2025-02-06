@@ -6,7 +6,7 @@ import java.util.Date;
 public class NotificationCommentDTO {
 
     private Long idNotification;
-    private String emial; // quien dio like 
+    private String email; // quien dio like 
     private String userPhoto;
     private Date date; //  automatico al rearla 
     private Time hora;
@@ -31,11 +31,11 @@ public class NotificationCommentDTO {
     }
 
     public String getEmial() {
-        return emial;
+        return email;
     }
 
     public void setEmial(String emial) {
-        this.emial = emial;
+        this.email = emial;
     }
 
     public String getUserPhoto() {

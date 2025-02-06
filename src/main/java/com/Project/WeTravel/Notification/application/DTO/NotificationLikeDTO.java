@@ -10,7 +10,7 @@ public class NotificationLikeDTO {
     
     
     private Long idNotification;
-    private String emial; // quien dio like 
+    private String email; // quien dio like 
     private String userPhoto;
     private Date date; //  automatico al rearla 
     private Time  hora;
@@ -26,11 +26,11 @@ public class NotificationLikeDTO {
     }
 
     public String getEmial() {
-        return emial;
+        return email;
     }
 
     public void setEmial(String emial) {
-        this.emial = emial;
+        this.email = emial;
     }
 
     public String getEmailreciber() {
@@ -50,11 +50,11 @@ public class NotificationLikeDTO {
     }
 
     public String getUsername() {
-        return emial;
+        return email;
     }
 
     public void setUsername(String username) {
-        this.emial = username;
+        this.email = username;
     }
 
     public String getUserPhoto() {

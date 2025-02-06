@@ -58,7 +58,7 @@ public class CombineService {
             // de cada DTOPost saco el Post id 
             Long idPost = postonlylist.get(i).getPostid();
 
-            // Debo encontrar cada Post pore id 
+            // Debo encontrar cada Post por id 
             Post postFound = postServiceImpl.getPostsByPostid(idPost);
 
             // aca post tiene una lista de fotos debo sacarla 
