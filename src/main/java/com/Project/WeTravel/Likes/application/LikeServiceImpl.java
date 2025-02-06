@@ -117,6 +117,7 @@ public void deleteLike(Long idLike) {
         userServiceImpl.saveUserEntity(user);
         postServiceImpl.createPost(postlike);
         likeJpaRepository.save(like);
+        
         return ResponseEntity.ok(like.toLikePostDTO());
         
     }

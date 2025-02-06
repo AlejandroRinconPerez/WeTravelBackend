@@ -4,6 +4,8 @@ import com.Project.WeTravel.Comments.domain.Comment;
 import com.Project.WeTravel.Folllow.domain.Follow;
 import com.Project.WeTravel.Folllow.domain.FollowDTO;
 import com.Project.WeTravel.Likes.domain.Likes;
+import com.Project.WeTravel.Notification.application.DTO.NotificationCommentDTO;
+import com.Project.WeTravel.Notification.application.DTO.NotificationFolowerDTO;
 import com.Project.WeTravel.Notification.application.DTO.NotificationLikeDTO;
 import com.Project.WeTravel.Users.domain.Users;
 import jakarta.persistence.*;
@@ -22,8 +24,7 @@ public class Notification {
     @Column(updatable = false) // No se actualiza después de la creación
     private Date notificationDate;
 
-    @Transient // No se persiste en la base de datos
-    private Long hora; // Solo la hora (se calcula desde notificationDate)
+    private Time hora; // Solo la hora (se calcula desde notificationDate)
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_follow", nullable = true)
@@ -42,12 +43,40 @@ public class Notification {
     private Users toUser;
 
     public Notification() {
-        this.status = false;
-        this.notificationDate = new Date();
-        this.hora = notificationDate.getTime();
 
     }
 
+    public Notification(Follow follow) {
+        this.status = false;
+        this.notificationDate = new Date();
+        this.setHora(new Time(notificationDate.getTime()));
+        this.follow = follow;
+        this.setToUser(this.follow.getFollowed()); 
+    }
+
+    public Notification(Comment comment) {
+        this.status = false;
+        this.notificationDate = new Date();
+        this.setHora(new Time(notificationDate.getTime()));
+        this.comment = comment;
+       this.setToUser(this.comment.getUser());
+    }
+
+    public Notification( Likes like) {
+        this.status = false;
+        this.notificationDate = new Date();
+        this.setHora(new Time(notificationDate.getTime()));
+        this.like = like;
+              this.setToUser(this.like.getUser()); 
+    }
+ 
+    
+    
+    
+    
+    
+    
+    
     public Notification(Date notificationDate, Follow follow, Users toUser) {
         this.status = false;
         this.notificationDate = notificationDate;
@@ -67,11 +96,11 @@ public class Notification {
         return status;
     }
 
-    public Long getHora() {
+    public Time getHora() {
         return hora;
     }
 
-    public void setHora(Long hora) {
+    public void setHora(Time hora) {
         this.hora = hora;
     }
 
@@ -163,14 +192,30 @@ public class Notification {
         return notificationLikeDTO;
 
     }
-// public static Notification fromDTOLike(NotificationLikeDTO notificationLikeDTO){
-//     
-// }
-//    
-    
-    
-    
-    
+
+    public NotificationCommentDTO toDTOComment() {
+        NotificationCommentDTO notificationCommentDTO = new NotificationCommentDTO();
+        notificationCommentDTO.setIdNotification(this.idNotification);
+        notificationCommentDTO.setUserPhoto(this.comment.getUser().getPhoto());
+        notificationCommentDTO.setEmial(this.comment.getUser().getEmail());
+        notificationCommentDTO.setidComment(this.comment.getIdComment());
+        notificationCommentDTO.setEmailreciber(this.toUser.getEmail());
+        return notificationCommentDTO;
+
+    }
+
+    public NotificationFolowerDTO toDTOFollow() {
+        NotificationFolowerDTO notificationFolowerDTO = new NotificationFolowerDTO();
+
+        notificationFolowerDTO.setIdNotification(this.idNotification);
+        notificationFolowerDTO.setEmial(this.follow.getFollower().getEmail());
+        notificationFolowerDTO.setUserPhoto(this.follow.getFollower().getPhoto());
+        notificationFolowerDTO.setIdFollow(this.follow.getIdData());
+        notificationFolowerDTO.setEmailreciber(this.toUser.getEmail());
+        return notificationFolowerDTO;
+
+    }
+
     @Override
     public String toString() {
         return "Notification{" + "idNotification=" + idNotification + ", status=" + status + ", notificationDate=" + notificationDate + ", follow=" + follow + ", comment=" + comment + ", like=" + like + ", toUser=" + toUser + '}';

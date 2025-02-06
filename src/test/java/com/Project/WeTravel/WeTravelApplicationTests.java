@@ -1,4 +1,4 @@
-package com.Project.demo;
+package com.Project.WeTravel;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
