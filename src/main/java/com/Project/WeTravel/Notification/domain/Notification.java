@@ -149,21 +149,25 @@ public class Notification {
 
 public NotificationDTO toDTO() {
     NotificationDTO dto = new NotificationDTO();
+   
     dto.setIdNotification(this.idNotification);
     dto.setDate(this.notificationDate);
-    dto.setHora(this.hora);
-    dto.setEmailRecipient(this.toUser.getEmail()); //
+    dto.setHora(new Time( this.notificationDate.getTime()));
+    dto.setEmailRecipient(this.toUser.getEmail()); 
 
     if (this.follow != null) {
         dto.setTipo("Follow");
         dto.setIdFollow(this.follow.getIdData());
+        dto.setEmail(this.follow.getFollower().getEmail());
         dto.setUserPhoto(this.follow.getFollower().getPhoto());
     } else if (this.like != null) {
         dto.setTipo("Like");
         dto.setIdLike(this.like.getIdLike());
+        dto.setEmail(this.like.getUser().getEmail());
          dto.setUserPhoto(this.like.getUser().getPhoto());
     } else if (this.comment != null) {
         dto.setTipo("Comment");
+         dto.setEmail(this.comment.getUser().getEmail());
         dto.setIdComment(this.comment.getIdComment());
          dto.setUserPhoto(this.comment.getUser().getPhoto());
     }
