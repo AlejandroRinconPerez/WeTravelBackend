@@ -21,9 +21,9 @@ public class NotificationController {
     private NotificationServiceImp notificationService;
 
     @GetMapping("/{username}")
-    public ResponseEntity<List<Notification>> getUserNotifications(@PathVariable String username) {
+    public ResponseEntity<List<NotificationDTO>> getUserNotifications(@PathVariable String username) {
         try {
-            List<Notification> notifications = notificationService.getUserNotifications(username);
+            List<NotificationDTO> notifications = notificationService.getUserNotifications(username);
             System.out.println("JSON Response: " + notifications);
             return ResponseEntity.ok(notifications);
         } catch (Exception e) {

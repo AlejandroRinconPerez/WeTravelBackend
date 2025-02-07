@@ -147,38 +147,40 @@ public class Notification {
         this.like = like;
     }
 
-    public NotificationDTO toNotificationDTO() {
-        NotificationDTO notificationDto = new NotificationDTO();
+public NotificationDTO toDTO() {
+    NotificationDTO dto = new NotificationDTO();
+    dto.setIdNotification(this.idNotification);
+    dto.setDate(this.notificationDate);
+    dto.setHora(this.hora);
+    dto.setEmailRecipient(this.toUser.getEmail()); //
 
-        notificationDto.setNotificationDate(this.getNotificationDate());
-        notificationDto.setStatus(this.status);
-        notificationDto.setIdNotification(this.idNotification);
-        notificationDto.setToUser(this.toUser);
-
-        // Inicializa relaciones perezosas si es necesario
-        if (this.follow != null) {
-            this.follow.getIdData(); // Inicializa la relación perezosa
-        }
-        if (this.comment != null) {
-            this.comment.getIdComment(); // Inicializa la relación perezosa
-        }
-        if (this.like != null) {
-            this.like.getIdLike(); // Inicializa la relación perezosa
-        }
-
-        return notificationDto;
+    if (this.follow != null) {
+        dto.setTipo("Follow");
+        dto.setIdFollow(this.follow.getIdData());
+        dto.setUserPhoto(this.follow.getFollower().getPhoto());
+    } else if (this.like != null) {
+        dto.setTipo("Like");
+        dto.setIdLike(this.like.getIdLike());
+         dto.setUserPhoto(this.like.getUser().getPhoto());
+    } else if (this.comment != null) {
+        dto.setTipo("Comment");
+        dto.setIdComment(this.comment.getIdComment());
+         dto.setUserPhoto(this.comment.getUser().getPhoto());
     }
 
-    public static Notification fromDTO(NotificationDTO notificationDTO) {
-        Notification notification = new Notification();
+    return dto;
+}
 
-        notification.setNotificationDate(notificationDTO.getNotificationDate());
-        notification.setStatus(notificationDTO.getStatus());
-        notification.setIdNotification(notificationDTO.getIdNotification());
-        notification.setToUser(notificationDTO.getToUser());
-
-        return notification;
-    }
+//    public static Notification fromDTO(NotificationDTO notificationDTO) {
+//        Notification notification = new Notification();
+//
+//        notification.setNotificationDate(notificationDTO.getNotificationDate());
+//        notification.setStatus(notificationDTO.getStatus());
+//        notification.setIdNotification(notificationDTO.getIdNotification());
+//        notification.setToUser(notificationDTO.getToUser());
+//
+//        return notification;
+//    }
 
     public NotificationLikeDTO toDTOLike() {
 

@@ -7,6 +7,7 @@ import com.Project.WeTravel.Folllow.domain.Follow;
 import com.Project.WeTravel.Likes.domain.Likes;
 import com.Project.WeTravel.Notification.domain.Notification;
 import com.Project.WeTravel.Post.domain.Post;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Entity;
 import jakarta.persistence.*;
 import java.util.ArrayList;
@@ -306,24 +307,6 @@ public class Users {
         return user;
     }
 
-    @Override
-    public String toString() {
-        return "Users{" + "idUser=" + idUser
-                + ", name=" + name
-                + ", userName=" + userName
-                + ", email=" + email
-                + ", password=" + password
-                + ", biography=" + biography
-                + ", photo=" + photo
-                + ", active=" + active
-                + ", creationDate=" + creationDate
-                + ", lastLogin=" + lastLogin
-                + ", editionDate=" + editionDate
-                + ", followerList=" + followerList
-                + ", followedList=" + followedList
-                + ", postList=" + postList
-                + ", likeList=" + likeList
-                + ", commentList=" + commentList + '}';
-    }
+  
 
 }

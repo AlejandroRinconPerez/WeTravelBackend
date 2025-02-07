@@ -103,17 +103,19 @@ public class NotificationServiceImp implements NotificationService {
             return new ArrayList<>();
         }
         return notifications.stream()
-                .map(notification -> notification.toNotificationDTO())
+                .map(Notification::toDTO)
                 .collect(Collectors.toList());
     }
 
-    public List<Notification> getUserNotifications(String username) {
+    public List<NotificationDTO> getUserNotifications(String username) {
         Optional<Users> user = userJpaRepositorty.findByuserName(username);
         if (user.isPresent()) {
             Users foundUser = user.get();
-            List<Notification> notifications = notificationJpaRepository.findBytoUser(foundUser);
+            List<Notification> notifications = notificationJpaRepository.findByToUserName(username);
             System.out.println("Notifications for user " + username + ": " + notifications);
-            return notifications;
+            return notifications.stream()
+                .map(Notification::toDTO)
+                .collect(Collectors.toList());
         } else {
             System.out.println("User not found: " + username);
         }

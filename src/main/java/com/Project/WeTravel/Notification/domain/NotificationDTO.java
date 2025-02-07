@@ -1,31 +1,27 @@
 package com.Project.WeTravel.Notification.domain;
 
 import com.Project.WeTravel.Users.domain.Users;
+import java.sql.Time;
 import java.util.Date;
 
 
 public class NotificationDTO {
 
     private Long idNotification;
+    private String email; // quien realizó la acción (like, comment, follow)
+    private String userPhoto;
+    private Date date; // fecha de la notificación
+    private Time hora; // hora de la notificación
+    private String tipo; // tipo de notificación (Follow, Like, Comment)
+    private Long idFollow; // solo para tipo Follow
+    private Long idLike; // solo para tipo Like
+    private Long idComment; // solo para tipo Comment
+    private String emailRecipient; // usuario que recibe la notificación
 
-    private Boolean status;
-    private Date notificationDate;
 
-    private Users toUser;
-
-    
-    
-    
-    public NotificationDTO() {
+        public NotificationDTO() {
     }
-
-    public NotificationDTO(Long idNotification, Boolean status, Date notificationDate, Users toUser) {
-        this.idNotification = idNotification;
-        this.status = status;
-        this.notificationDate = notificationDate;
-        this.toUser = toUser;
-    }
-
+    
     public Long getIdNotification() {
         return idNotification;
     }
@@ -34,34 +30,77 @@ public class NotificationDTO {
         this.idNotification = idNotification;
     }
 
-    public Boolean getStatus() {
-        return status;
+
+
+    public String getEmail() {
+        return email;
     }
 
-    public void setStatus(Boolean status) {
-        this.status = status;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public Date getNotificationDate() {
-        return notificationDate;
+    public String getUserPhoto() {
+        return userPhoto;
     }
 
-    public void setNotificationDate(Date notificationDate) {
-        this.notificationDate = notificationDate;
+    public void setUserPhoto(String userPhoto) {
+        this.userPhoto = userPhoto;
     }
 
-    public Users getToUser() {
-        return toUser;
+    public Date getDate() {
+        return date;
     }
 
-    public void setToUser(Users toUser) {
-        this.toUser = toUser;
+    public void setDate(Date date) {
+        this.date = date;
     }
 
-    @Override
-    public String toString() {
-        return "NotificationDTO{" + "idNotification=" + idNotification + ", status=" + status + ", notificationDate=" + notificationDate + ", toUser=" + toUser + '}';
+    public Time getHora() {
+        return hora;
     }
 
-    
+    public void setHora(Time hora) {
+        this.hora = hora;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
+    public Long getIdFollow() {
+        return idFollow;
+    }
+
+    public void setIdFollow(Long idFollow) {
+        this.idFollow = idFollow;
+    }
+
+    public Long getIdLike() {
+        return idLike;
+    }
+
+    public void setIdLike(Long idLike) {
+        this.idLike = idLike;
+    }
+
+    public Long getIdComment() {
+        return idComment;
+    }
+
+    public void setIdComment(Long idComment) {
+        this.idComment = idComment;
+    }
+
+    public String getEmailRecipient() {
+        return emailRecipient;
+    }
+
+    public void setEmailRecipient(String emailRecipient) {
+        this.emailRecipient = emailRecipient;
+    }
 }

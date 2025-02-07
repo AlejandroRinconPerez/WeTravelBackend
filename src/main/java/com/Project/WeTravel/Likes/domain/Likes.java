@@ -177,15 +177,6 @@ public class Likes {
         return like;
     }
 
-    
-    @Override
-    public String toString() {
-        return "Likes{" + "idLike=" + idLike
-                + ", user=" + user
-                + ", reactionDate=" + reactionDate
-                + ", post=" + post
-                + ", comment=" + comment
-                + ", notification=" + notification + '}';
-    }
+
 
 }

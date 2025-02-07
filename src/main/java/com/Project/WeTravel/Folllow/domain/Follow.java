@@ -2,6 +2,7 @@ package com.Project.WeTravel.Folllow.domain;
 
 import com.Project.WeTravel.Notification.domain.Notification;
 import com.Project.WeTravel.Users.domain.Users;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -23,19 +24,17 @@ public class Follow {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idData;
 
-    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "followedId")
     private Users followed;
 
-    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "followerId")
     private Users follower;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateOfFollowing;
-
+    
     @OneToOne(mappedBy = "follow", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Notification notification;
 
@@ -80,12 +79,6 @@ public class Follow {
         this.dateOfFollowing = dateOfFollowing;
     }
 
-    @Override
-    public String toString() {
-        return "Follow{" + "idData=" + idData
-                + ", followed=" + followed
-                + ", follower=" + follower
-                + ", dateOfFollowing=" + dateOfFollowing + '}';
-    }
+  
 
 }

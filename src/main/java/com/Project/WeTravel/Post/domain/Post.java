@@ -230,18 +230,6 @@ public class Post {
         return post;
     }
 
-    @Override
-    public String toString() {
-        return "Post{" + "idPost=" + idPost
-                + ", user=" + user
-                + ", description=" + description
-                + ", creationDate=" + creationDate
-                + ", updatedDate=" + updatedDate
-                + ", postList=" + photolist
-                + ", tagList=" + tagList
-                + ", likeList=" + likeList
-                + ", commentList=" + commentList + '}';
-
-    }
+   
 
 }

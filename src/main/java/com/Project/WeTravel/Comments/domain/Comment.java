@@ -171,16 +171,6 @@ public class Comment {
     return comment;
 }
 
-    @Override
-    public String toString() {
-        return "Comment{" + "idComment=" + idComment
-                + ", content=" + content
-                + ", createDate=" + createDate
-                + ", upDatedAt=" + upDatedAt
-                + ", user=" + user
-                + ", post=" + post
-                + ", likeList=" + likeList
-                + ", notification=" + notification + '}';
-    }
+   
 
 }
