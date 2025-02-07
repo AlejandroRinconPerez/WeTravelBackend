@@ -13,6 +13,9 @@ public class NotificationDTO {
 
     private Users toUser;
 
+    
+    
+    
     public NotificationDTO() {
     }
 

@@ -18,6 +18,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import static org.springframework.http.RequestEntity.post;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,7 @@ public class LikeServiceImpl implements LikeService {
     private final NotificationServiceImp notificationServiceImp;
 
     @Autowired
-    public LikeServiceImpl(LikeJpaRepository likeJpaRepository, PostServiceImpl postServiceImpl, UserServiceImpl userServiceImpl, CommentServicesImpl commentServicesImpl, NotificationServiceImp notificationServiceImp) {
+    public LikeServiceImpl(@Lazy LikeJpaRepository likeJpaRepository, PostServiceImpl postServiceImpl, UserServiceImpl userServiceImpl, @Lazy CommentServicesImpl commentServicesImpl, NotificationServiceImp notificationServiceImp) {
         this.likeJpaRepository = likeJpaRepository;
         this.postServiceImpl = postServiceImpl;
         this.userServiceImpl = userServiceImpl;

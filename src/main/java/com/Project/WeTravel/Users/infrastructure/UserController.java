@@ -47,11 +47,22 @@ public class UserController {
 
     @PutMapping("/update/{email}")
     public ResponseEntity<UsersDTO> updateUser(
-            @PathVariable String email,
+                @PathVariable String email,
             @RequestBody Users user
     ) {
 
         return userService.updateUserDetails(email, user);
     }
 
+        @GetMapping("/notfolloging/{email}")
+    public List<UsersDTO> getuserNotFollowing(@PathVariable String email) {
+        Users user = userService.findUserbyEmail(email).getBody();
+        List<UsersDTO> userlist = userService.alluserthatarenotfollowingme(email);
+        
+        
+        
+        return userlist;
+    }
+    
+    
 }

@@ -7,6 +7,7 @@ import com.Project.WeTravel.Users.application.UserDTO.UsersDTO;
 import com.Project.WeTravel.Users.infrastructure.UserJpaRepositorty;
 import com.Project.WeTravel.Utilities.exceptions.InvalidInputException;
 import com.Project.WeTravel.Utilities.exceptions.NotFoundException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -182,4 +183,22 @@ public class UserServiceImpl implements UserService {
         return ResponseEntity.ok(responseDTO);
     }
 
+    
+    
+    public List<UsersDTO> alluserthatarenotfollowingme(String emial){
+        
+        Users user =  userJpaRepositorty.findByemail(emial).get();
+        
+        List<Users >useerList = userJpaRepositorty.findUsersNotFollowedBy(user);
+        if (useerList.isEmpty()) {
+            throw new NotFoundException("Users has not been foud");
+        }
+       return useerList.stream()
+              .map(Users::toDTO)
+               
+                .collect(Collectors.toList());
+   
+    }
+    
+    
 }

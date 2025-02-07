@@ -32,7 +32,7 @@ public class CommentServicesImpl implements CommentService {
 
     
        @Autowired
-    public CommentServicesImpl(CommentJpaRepository commentJpaRepository, LikeServiceImpl likeServiceImpl, PostServiceImpl postServiceImpl, UserServiceImpl userServiceImpl, NotificationServiceImp notificationServiceImp) {
+    public CommentServicesImpl(@Lazy CommentJpaRepository commentJpaRepository, LikeServiceImpl likeServiceImpl, PostServiceImpl postServiceImpl, UserServiceImpl userServiceImpl, NotificationServiceImp notificationServiceImp) {
         this.commentJpaRepository = commentJpaRepository;
         this.likeServiceImpl = likeServiceImpl;
         this.postServiceImpl = postServiceImpl;
