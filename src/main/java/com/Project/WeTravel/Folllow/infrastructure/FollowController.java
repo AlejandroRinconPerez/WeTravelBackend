@@ -19,16 +19,16 @@ public class FollowController {
     private FollowServiceImpl followService;
 
     @PostMapping("/add/{idfollowed}/{idfollower}")
-    public ResponseEntity<?> followUser(@PathVariable Long idfollowed, @PathVariable Long idfollower ) {
+    public ResponseEntity<?> followUser(@PathVariable String idfollowed, @PathVariable String idfollower ) {
         try {
             Follow createdFollow = followService.followUser(idfollowed,idfollower );
-            return ResponseEntity.ok(createdFollow.toFollowDTO());
+            return ResponseEntity.ok(createdFollow);
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
     @DeleteMapping("/unfollow/{idfollowed}/{idfollower}")
-    public ResponseEntity<String> unfollowUser(@PathVariable Long idfollowed, @PathVariable Long idfollower ) {
+    public ResponseEntity<String> unfollowUser(@PathVariable String idfollowed, @PathVariable String idfollower ) {
         followService.unfollowUser(idfollowed,idfollower);
         return ResponseEntity.ok("Unfollowed successfully");
     }

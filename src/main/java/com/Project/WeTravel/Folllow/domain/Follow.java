@@ -80,25 +80,6 @@ public class Follow {
         this.dateOfFollowing = dateOfFollowing;
     }
 
-    public FollowDTO toFollowDTO() {
-        FollowDTO followDto = new FollowDTO();
-
-        followDto.setFollowed(this.followed);
-        followDto.setFollower(this.follower);
-
-        return followDto;
-
-    }
-
-    public static Follow fromDTO(FollowDTO followDTO) {
-        Follow follow = new Follow();
-
-        follow.setFollowed(followDTO.getFollowed());
-        follow.setFollower(followDTO.getFollower());
-
-        return follow;
-    }
-
     @Override
     public String toString() {
         return "Follow{" + "idData=" + idData

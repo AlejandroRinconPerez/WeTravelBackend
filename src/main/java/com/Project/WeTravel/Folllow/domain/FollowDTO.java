@@ -5,46 +5,43 @@ import java.util.Date;
 
 public class FollowDTO {
 
-    private Users follower;
-    private Users followed;
-    private Date dateFollow = new Date();
+    private Date reactionDate = new Date();
+    private String userNameFollowed;
+    private String userNameFollower;
+
 
     public FollowDTO() {
     }
 
-    public FollowDTO(Users follower, Users followed) {
-        this.follower = follower;
-        this.followed = followed;
-        this.dateFollow = new Date();
+    public FollowDTO(String userNameFollowed, String userNameFollower) {
+        this.userNameFollowed = userNameFollowed;
+        this.userNameFollower = userNameFollower;
     }
 
-    public Users getFollower() {
-        return follower;
+    public Date getReactionDate() {
+        return reactionDate;
     }
 
-    public void setFollower(Users follower) {
-        this.follower = follower;
+    public void setReactionDate(Date reactionDate) {
+        this.reactionDate = reactionDate;
     }
 
-    public Users getFollowed() {
-        return followed;
+    public String getUserNameFollowed() {
+        return userNameFollowed;
     }
 
-    public void setFollowed(Users followed) {
-        this.followed = followed;
+    public void setUserNameFollowed(String userNameFollowed) {
+        this.userNameFollowed = userNameFollowed;
     }
 
-    public Date getDateFollow() {
-        return dateFollow;
+    public String getUserNameFollower() {
+        return userNameFollower;
     }
 
-    public void setDateFollow(Date dateFollow) {
-        this.dateFollow = dateFollow;
+    public void setUserNameFollower(String userNameFollower) {
+        this.userNameFollower = userNameFollower;
     }
 
-    @Override
-    public String toString() {
-        return "FollowDTO{" + "follower=" + follower + ", followed=" + followed + ", dateFollow=" + dateFollow + '}';
-    }
+    
 
 }

@@ -5,6 +5,7 @@ import com.Project.WeTravel.Folllow.domain.FollowDTO;
 import com.Project.WeTravel.Folllow.infrastructure.FollowJpaRepository;
 import com.Project.WeTravel.Notification.application.NotificationServiceImp;
 import com.Project.WeTravel.Users.application.UserDTO.UsersDTO;
+import com.Project.WeTravel.Users.application.UserServiceImpl;
 import com.Project.WeTravel.Users.domain.Users;
 import com.Project.WeTravel.Users.infrastructure.UserJpaRepositorty;
 import jakarta.persistence.EntityNotFoundException;
@@ -13,48 +14,43 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
 public class FollowServiceImpl implements FollowService {
 
     private final FollowJpaRepository followJpaRepository;
-    private final UserJpaRepositorty userJpaRepositorty;
+    private final UserServiceImpl userService;
     private final NotificationServiceImp notificationService;
 
     @Autowired
-    public FollowServiceImpl(FollowJpaRepository followJpaRepository, UserJpaRepositorty userJpaRepositorty, NotificationServiceImp notificationService) {
+    public FollowServiceImpl(FollowJpaRepository followJpaRepository, UserServiceImpl userService, NotificationServiceImp notificationService) {
         this.followJpaRepository = followJpaRepository;
-        this.userJpaRepositorty = userJpaRepositorty;
+        this.userService = userService;
         this.notificationService = notificationService;
 
     }
 
     @Transactional
     @Override
-    public Follow followUser(Long idfollower, Long idfollowed) {
-        Optional<Users> optionalFollower = userJpaRepositorty.findById(idfollower);
-        Optional<Users> optionalFollowed = userJpaRepositorty.findById(idfollowed);
+    public Follow followUser(String emailfollower, String emailfollowed) {
+        ResponseEntity<Users> optionalFollower = userService.findUserbyEmail(emailfollower);
+        ResponseEntity<Users> optionalFollowed = userService.findUserbyEmail(emailfollowed);
 
-        if (optionalFollower.isPresent() && optionalFollowed.isPresent()) {
-            Users follower = optionalFollower.get();
-            Users followed = optionalFollowed.get();
+        if (optionalFollower.getBody() != null && optionalFollowed.getBody() != null) {
+            Users follower = optionalFollower.getBody();
+            Users followed = optionalFollowed.getBody();
 
             if (follower.getUserName().equals(followed.getUserName())) {
                 throw new IllegalArgumentException("You cannot follow yourself.");
             }
 
             Follow follow = new Follow(followed, follower);
-            follower.addFollower(follow);
-            followed.addFollowed(follow);
-            
-            userJpaRepositorty.save(followed);
-            userJpaRepositorty.save(follower);
-           follow= followJpaRepository.save(follow);
-           notificationService.createNotificationFollow(follow);
-            
 
-           
+            follow = followJpaRepository.save(follow);
+            notificationService.createNotificationFollow(follow);
+
             return follow;
         } else {
             throw new EntityNotFoundException("Follower or followed user not found.");
@@ -63,14 +59,17 @@ public class FollowServiceImpl implements FollowService {
 
     @Transactional
     @Override
-    public void unfollowUser(Long idfollower, Long idfollowed) {
+    public void unfollowUser(String emailfollower, String emailfollowed) {
 
-        Optional<Users> follower = userJpaRepositorty.findById(idfollower);
-        Optional<Users> followed = userJpaRepositorty.findById(idfollowed);
+        ResponseEntity<Users> optionalFollower = userService.findUserbyEmail(emailfollower);
+        ResponseEntity<Users> optionalFollowed = userService.findUserbyEmail(emailfollowed);
 
-        if (follower.isPresent() && followed.isPresent()) {
+         if (optionalFollower.getBody() != null && optionalFollowed.getBody() != null) {
+            Users follower = optionalFollower.getBody();
+            Users followed = optionalFollowed.getBody();
+                    
             Optional<Follow> followToRemove = followJpaRepository.findByFollowerUserNameAndFollowedUserName(
-                    follower.get().getUserName(), followed.get().getUserName());
+                    follower.getUserName(), followed.getUserName());
 
             if (followToRemove.isPresent()) {
                 followJpaRepository.delete(followToRemove.get());
@@ -99,6 +98,7 @@ public class FollowServiceImpl implements FollowService {
                 .collect(Collectors.toList());
     }
 /// Nota Para jaime Ojo con ese DTO  que no es oficial si se quita marca errores 
+
     private UsersDTO toUsersDTO(Users user) {
         UsersDTO usersDTO = new UsersDTO();
         usersDTO.setUserName(user.getUserName());
