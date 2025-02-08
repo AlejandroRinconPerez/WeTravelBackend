@@ -182,5 +182,13 @@ public class PostController {
     public ResponseEntity<Void> deletePost(@PathVariable Long id) {
         return postServiceImpl.deletePost(id);
     }
-
+  @GetMapping("/postid/{postId}")
+    public ResponseEntity<CombinePostDTO> PosyById(
+            @PathVariable Long postId
+            
+    ) {
+        CombinePostDTO updatedPost = postServiceImpl.getPostById(postId);
+        
+        return ResponseEntity.ok(updatedPost);
+    }
 }

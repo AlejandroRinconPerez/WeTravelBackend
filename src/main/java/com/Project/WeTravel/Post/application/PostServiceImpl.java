@@ -152,12 +152,16 @@ public ResponseEntity<Void> deletePost(Long idPost) {
     // METODOS NUEVOS CON FILTRO DE USUARIOS ACTIVOS EN GENERAL 
     // Posts por usuario activo ordenados por fecha
     // ya esta
+    @Override
     public List<CombinePostDTO> findByUserOrderByCreationDateDesc(Long idUser) {
         Users user = userServiceImpl.getUserNormalbyId(idUser);
+        user.setLastLogin(new Date ());
+        userServiceImpl.saveUserEntity(user);
         List<Post> postList = postJpaRepository.findByUserOrderByCreationDateDesc(user);
         return getAllPosts2(postList);
     }
 
+    @Override
     public List<CombinePostDTO> getAllPost() {
         List<Post> postList = postJpaRepository.findAll();
         return getAllPosts2(postList);
@@ -165,6 +169,7 @@ public ResponseEntity<Void> deletePost(Long idPost) {
 
     //Posts por tag (usuario activo) ordenados por fecha
     // ya etsa 
+    @Override
     public List<CombinePostDTO> findPostsByTagContent(String tagtext) {
 
         List<Post> postList = postJpaRepository.findPostsByTagContent(tagtext);
@@ -174,32 +179,38 @@ public ResponseEntity<Void> deletePost(Long idPost) {
 //este no se usara 
 
     // Todos los posts (usuarios activos) ordenados por likes
+    @Override
     public List<CombinePostDTO> findAllOrderByLikesDesc() {
         List<Post> postList = postJpaRepository.findAllOrderByLikesDesc();
         return getAllPosts2(postList);
     }
 
+    @Override
     public List<CombinePostDTO> findPostsByUserId(Long userid) {
         List<Post> postList = postJpaRepository.findPostsByUserId(userid);
         return getAllPosts2(postList);
     }
 
+    @Override
     public List<CombinePostDTO> findPostsByActiveUsers() {
         List<Post> postList = postJpaRepository.findPostsByActiveUsers();
         return getAllPosts2(postList);
     }
 
+    @Override
     public List<CombinePostDTO> findPostsLikedByUser(Long id) {
         List<Post> postList = postJpaRepository.findLikedPostsByUserId(id);
         return getAllPosts2(postList);
     }
 
     // Encontrar post by comment 
+    @Override
     public Post getPostbycomment(Comment comment) {
         return postJpaRepository.findByCommentInList(comment);
 
     }
 
+    @Override
     public ResponseEntity<Post> updatePost(Long postId, CreatePostDTO createPostDTO) {
         Optional<Post> postOpt = postJpaRepository.findById(postId);
         if (!postOpt.isPresent()) {
@@ -243,6 +254,7 @@ public ResponseEntity<Void> deletePost(Long idPost) {
     }
 
 //  esta funcion sirve para convertir a cualquier lista de post en un post DTO  
+    @Override
     public List<CombinePostDTO> getAllPosts2(List<Post> postList) {
         // Lista Final Para el REtur
         List<CombinePostDTO> combinePost = new ArrayList();
@@ -282,12 +294,67 @@ public ResponseEntity<Void> deletePost(Long idPost) {
         }
         return combinePost;
     }
+    @Override
+    public CombinePostDTO getSinglePostDetails(Post postItem) {
+    // Crear instancia de CombinePostDTO
+    CombinePostDTO combinePostFinal = new CombinePostDTO();
+    List<PhotoDTOurl> photoDTOurl = new ArrayList<>();
+    List<LikePostDTO> likePostDTO = new ArrayList<>();
+    List<CommentDTO> commentDTO = new ArrayList<>();
+    List<Tag> taglist = new ArrayList<>();
+    
+    // Photo
+    List<Photo> photoList = postItem.getPhotolist();
+    for (Photo photoItem : photoList) {
+        PhotoDTOurl phototosaveDTO = photoItem.toPhotoDTOurl();
+        photoDTOurl.add(phototosaveDTO);
+    }
 
+    // showPostDTO
+    ShowPostDTO showPostDTO = postItem.toShowPostDTO();
+
+    // Tag 
+    taglist = postItem.getTagList();
+
+    // Like
+    for (Likes likeitem : postItem.getLikeList()) {
+        likePostDTO.add(likeitem.toLikePostDTO());
+    }
+
+    // Comment
+    for (Comment commentItem : postItem.getCommentList()) {
+        commentDTO.add(commentItem.toDTO());
+    }
+
+    // Asignar valores al CombinePostDTO
+    combinePostFinal.setTagDTO(taglist);
+    combinePostFinal.setPhotoDTOurl(photoDTOurl);
+    combinePostFinal.setCommentDTO(commentDTO);
+    combinePostFinal.setLikePostDTO(likePostDTO);
+    combinePostFinal.setShowPostDTO(showPostDTO);
+
+    return combinePostFinal;
+}
+
+    
+    @Override
+    public CombinePostDTO getPostById(Long idPost){
+   Post post =   postJpaRepository.findById(idPost).get();
+   if (post == null) {
+            System.out.println("No se encontró el Post");
+             throw new NotFoundException("No post wiht that id");
+        }
+   CombinePostDTO postdto = getSinglePostDetails(post);
+   return postdto;
+    }
+    
+    
     @Override
     public List<ShowPostDTO> getPostsByUserId(Long idUser) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
+    @Override
     public ResponseEntity<Post> getPostByIdLike(Long idLike) {
         System.out.println("Lo estoy buscando");
         Post post = postJpaRepository.findPostByLikeId(idLike);

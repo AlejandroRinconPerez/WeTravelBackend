@@ -144,6 +144,7 @@ public class UserServiceImpl implements UserService {
     }
 
     
+    @Override
       public ResponseEntity<Users> findUserbyUsername(String email) {
 
         Users user = userJpaRepositorty.findByuserName(email).get();
@@ -156,6 +157,7 @@ public class UserServiceImpl implements UserService {
 
     }
     
+    @Override
     public ResponseEntity<Users> findUserbyEmail(String email) {
 
         Users user = userJpaRepositorty.findByemail(email).get();
@@ -168,6 +170,7 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    @Override
     public ResponseEntity<UsersDTO> updateUserDetails(String email, Users user) {
         Users userToUpdate = findUserbyEmail(email).getBody();
 
@@ -196,6 +199,7 @@ public class UserServiceImpl implements UserService {
         return ResponseEntity.ok(responseDTO);
     }
 
+    @Override
     public List<UsersDTO> alluserthatarenotfollowingme(String emial) {
 
         Users user = userJpaRepositorty.findByemail(emial).get();
@@ -210,7 +214,8 @@ public class UserServiceImpl implements UserService {
 
     }
 
-public Boolean verificarUserEmailPassword(String email, String password) {
+    @Override
+    public Boolean verificarUserEmailPassword(String email, String password) {
 
     Optional<Users> userEmailOptional = userJpaRepositorty.findByemail(email);
     Optional<Users> userPasswordOptional = userJpaRepositorty.findBypassword(password);
@@ -223,6 +228,7 @@ public Boolean verificarUserEmailPassword(String email, String password) {
         return false;
     }
 }
+    @Override
     public UsersDTO cambiarStatus(String email) {
 
         Users user = userJpaRepositorty.findByemail(email).get();

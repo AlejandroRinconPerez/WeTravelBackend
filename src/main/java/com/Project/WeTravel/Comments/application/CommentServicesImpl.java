@@ -143,12 +143,14 @@ public class CommentServicesImpl implements CommentService {
 
     }
 
+    @Override
     public Comment findCommentByLike(Long idlike) {
         Comment comment = commentJpaRepository.findCommentByLikeId(idlike);
 
         return comment;
     }
 
+    @Override
     public ResponseEntity<Comment> updateComment(Long idComment, Comment updatedComment) {
         if (idComment == null || idComment <= 0) {
             throw new InvalidInputException("ID de comentario inválido");

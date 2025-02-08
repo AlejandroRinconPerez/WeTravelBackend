@@ -39,7 +39,8 @@ public class PhotoServiceImpl implements PhotoService {
                 .collect(Collectors.toList());
 
     }
-public List<PhotoDTOurl> allPhotobyUser(String email) {
+    @Override
+    public List<PhotoDTOurl> allPhotobyUser(String email) {
     Users user = userServiceImpl.findUserbyEmail(email).getBody();
     if (user == null) {
         throw new NotFoundException("User not found with email: " + email);

@@ -1,13 +1,11 @@
 package com.Project.WeTravel.Folllow.application;
 
 import com.Project.WeTravel.Folllow.domain.Follow;
-import com.Project.WeTravel.Folllow.domain.FollowDTO;
 import com.Project.WeTravel.Folllow.infrastructure.FollowJpaRepository;
 import com.Project.WeTravel.Notification.application.NotificationServiceImp;
 import com.Project.WeTravel.Users.application.UserDTO.UsersDTO;
 import com.Project.WeTravel.Users.application.UserServiceImpl;
 import com.Project.WeTravel.Users.domain.Users;
-import com.Project.WeTravel.Users.infrastructure.UserJpaRepositorty;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import java.util.List;

@@ -56,6 +56,7 @@ public class NotificationServiceImp implements NotificationService {
 //            System.out.println("Usuario seguido no encontrado: " + follow.getFollowed().getUserName());
 //        }
 //    }
+    @Override
     public ResponseEntity<NotificationFolowerDTO> createNotificationFollow(Follow follow) {
         Notification notificationfollow = new Notification(follow);
         notificationJpaRepository.save(notificationfollow);
@@ -63,6 +64,7 @@ public class NotificationServiceImp implements NotificationService {
         return ResponseEntity.ok(notificationFolowerDTO);
     }
     
+    @Override
     public ResponseEntity<NotificationLikeDTO> createNotificationLike(Likes like) {
         Notification notificationLike = new Notification(like);
         notificationLike = notificationJpaRepository.save(notificationLike);
@@ -70,6 +72,7 @@ public class NotificationServiceImp implements NotificationService {
         return ResponseEntity.ok(notificationLikeDTO);
     }
     
+    @Override
     public ResponseEntity<NotificationCommentDTO> createNotificationFollow(Comment comment) {
         Notification notificationComment = new Notification(comment);
         notificationComment = notificationJpaRepository.save(notificationComment);
@@ -108,6 +111,7 @@ public class NotificationServiceImp implements NotificationService {
                 .collect(Collectors.toList());
     }
     
+    @Override
     public List<NotificationDTO> getUserNotifications(String username) {
         Optional<Users> user = userJpaRepositorty.findByuserName(username);
         if (user.isPresent()) {
@@ -128,6 +132,7 @@ public class NotificationServiceImp implements NotificationService {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     
+    @Override
     public void changeNotificationStaatus(Long idNotification) {
         
         Optional< Notification> notification = notificationJpaRepository.findById(idNotification);

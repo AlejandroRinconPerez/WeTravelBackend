@@ -63,5 +63,7 @@ public class LoginController {
             return ResponseEntity.status(500).body("Error al registrar el usuario.");
         }
     }
-   
+
+    
+    
 }
