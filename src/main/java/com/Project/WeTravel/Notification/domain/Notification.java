@@ -147,6 +147,8 @@ public class Notification {
         dto.setDate(this.notificationDate);
         dto.setHora(new Time(this.notificationDate.getTime()));
         dto.setEmailRecipient(this.toUser.getEmail());
+        dto.setStatus(this.status);
+      
 
         if (this.follow != null) {
             dto.setTipo("Follow");

@@ -10,6 +10,7 @@ public class NotificationDTO {
     private Long idNotification;
     private String email; // quien realizó la acción (like, comment, follow)
     private String userPhoto;
+    private Boolean status;
     private Date date; // fecha de la notificación
     private Time hora; // hora de la notificación
     private String tipo; // tipo de notificación (Follow, Like, Comment)
@@ -22,7 +23,16 @@ public class NotificationDTO {
 
         public NotificationDTO() {
     }
+
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
     
+        
     public Long getIdNotification() {
         return idNotification;
     }

@@ -1,4 +1,3 @@
-
 package com.Project.WeTravel.Notification.application;
 
 import com.Project.WeTravel.Comments.domain.Comment;
@@ -13,6 +12,7 @@ import com.Project.WeTravel.Notification.application.DTO.NotificationLikeDTO;
 import com.Project.WeTravel.Notification.domain.NotificationDTO;
 import com.Project.WeTravel.Users.domain.Users;
 import com.Project.WeTravel.Users.infrastructure.UserJpaRepositorty;
+import com.Project.WeTravel.Utilities.exceptions.NotFoundException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -24,11 +24,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class NotificationServiceImp implements NotificationService {
-
+    
     private final NotificationJpaRepository notificationJpaRepository;
     private final FollowJpaRepository followJpaRepository;
     private final UserJpaRepositorty userJpaRepositorty;
-
+    
     @Autowired
     public NotificationServiceImp(NotificationJpaRepository notificationJpaRepository, FollowJpaRepository followJpaRepository, UserJpaRepositorty userJpaRepositorty) {
         this.notificationJpaRepository = notificationJpaRepository;
@@ -62,22 +62,22 @@ public class NotificationServiceImp implements NotificationService {
         NotificationFolowerDTO notificationFolowerDTO = notificationfollow.toDTOFollow();
         return ResponseEntity.ok(notificationFolowerDTO);
     }
-
+    
     public ResponseEntity<NotificationLikeDTO> createNotificationLike(Likes like) {
         Notification notificationLike = new Notification(like);
         notificationLike = notificationJpaRepository.save(notificationLike);
         NotificationLikeDTO notificationLikeDTO = notificationLike.toDTOLike();
         return ResponseEntity.ok(notificationLikeDTO);
     }
-
+    
     public ResponseEntity<NotificationCommentDTO> createNotificationFollow(Comment comment) {
         Notification notificationComment = new Notification(comment);
         notificationComment = notificationJpaRepository.save(notificationComment);
         NotificationCommentDTO notificationCommentDTO = notificationComment.toDTOComment();
         return ResponseEntity.ok(notificationCommentDTO);
-
+        
     }
-
+    
     @Override
     public void markAsRead(Long notificationId) {
         Notification notification = notificationJpaRepository.findById(notificationId)
@@ -85,11 +85,11 @@ public class NotificationServiceImp implements NotificationService {
         notification.setStatus(true);
         notificationJpaRepository.save(notification);
     }
-
+    
     public List<Notification> getNotifications() {
-
+        
         return notificationJpaRepository.findAll();
-
+        
     }
 
 //    public List<Notification> getUserNotificationsStatus(String username) {
@@ -106,7 +106,7 @@ public class NotificationServiceImp implements NotificationService {
                 .map(Notification::toDTO)
                 .collect(Collectors.toList());
     }
-
+    
     public List<NotificationDTO> getUserNotifications(String username) {
         Optional<Users> user = userJpaRepositorty.findByuserName(username);
         if (user.isPresent()) {
@@ -114,17 +114,29 @@ public class NotificationServiceImp implements NotificationService {
             List<Notification> notifications = notificationJpaRepository.findByToUserName(username);
             System.out.println("Notifications for user " + username + ": " + notifications);
             return notifications.stream()
-                .map(Notification::toDTO)
-                .collect(Collectors.toList());
+                    .map(Notification::toDTO)
+                    .collect(Collectors.toList());
         } else {
             System.out.println("User not found: " + username);
         }
         return new ArrayList<>();
     }
-
+    
     @Override
     public void createFollowNotification(Follow follow) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-
+    
+    public void changeNotificationStaatus(Long idNotification) {
+        
+        Optional< Notification> notification = notificationJpaRepository.findById(idNotification);
+        if (notification.isEmpty()) {
+            throw new NotFoundException("Notification not found ");
+            
+        }
+        notification.get().setStatus(true);
+        notificationJpaRepository.save(notification.get());
+        
+    }
+    
 }
