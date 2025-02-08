@@ -11,6 +11,8 @@ public class NotificationDTO {
     private String email; // quien realizó la acción (like, comment, follow)
     private String userPhoto;
     private Boolean status;
+    private String name;
+    private String username;
     private Date date; // fecha de la notificación
     private Time hora; // hora de la notificación
     private String tipo; // tipo de notificación (Follow, Like, Comment)
@@ -19,6 +21,7 @@ public class NotificationDTO {
     private Long idComment; // solo para tipo Comment
     private String emailRecipient; // usuario que recibe la notificación
     private Long idPost; //  esto es solo para like y post 
+    
 
 
         public NotificationDTO() {
@@ -30,6 +33,22 @@ public class NotificationDTO {
 
     public void setStatus(Boolean status) {
         this.status = status;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
     
         

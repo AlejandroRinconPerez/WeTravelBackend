@@ -79,11 +79,12 @@ public class NotificationServiceImp implements NotificationService {
     }
     
     @Override
-    public void markAsRead(Long notificationId) {
+    public Notification markAsRead(Long notificationId) {
         Notification notification = notificationJpaRepository.findById(notificationId)
                 .orElseThrow(() -> new RuntimeException("Notification not found"));
         notification.setStatus(true);
-        notificationJpaRepository.save(notification);
+       Notification noti = notificationJpaRepository.save(notification);
+        return noti;
     }
     
     public List<Notification> getNotifications() {

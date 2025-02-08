@@ -155,11 +155,15 @@ public class Notification {
             dto.setIdFollow(this.follow.getIdData());
             dto.setEmail(this.follow.getFollower().getEmail());
             dto.setUserPhoto(this.follow.getFollower().getPhoto());
+            dto.setUsername(this.follow.getFollower().getUserName());
+            dto.setUsername(this.follow.getFollower().getName());
         } else if (this.like != null) {
             dto.setTipo("Like");
             dto.setIdLike(this.like.getIdLike());
             dto.setEmail(this.like.getUser().getEmail());
             dto.setUserPhoto(this.like.getUser().getPhoto());
+            dto.setUsername(this.like.getUser().getUserName());
+            dto.setName(this.like.getUser().getName());
          
            
         } else if (this.comment != null) {
@@ -168,6 +172,8 @@ public class Notification {
             dto.setIdComment(this.comment.getIdComment());
             dto.setUserPhoto(this.comment.getUser().getPhoto());
             dto.setIdPost(this.comment.getPost().getIdPost());
+            dto.setUsername(this.comment.getUser().getUserName());
+            dto.setName(this.comment.getUser().getName());
         }
 
         return dto;

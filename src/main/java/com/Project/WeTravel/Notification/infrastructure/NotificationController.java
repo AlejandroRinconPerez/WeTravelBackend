@@ -35,10 +35,11 @@ public class NotificationController {
     }
 
     @PostMapping("/read/{notificationId}")
-    public ResponseEntity<String> markAsRead(@PathVariable Long notificationId) {
+    public ResponseEntity<NotificationDTO> markAsRead(@PathVariable Long notificationId) {
         System.out.println("Marking notification as read: " + notificationId);
-        notificationService.markAsRead(notificationId);
-        return ResponseEntity.ok("Notification marked as read");
+        Notification noti =  notificationService.markAsRead(notificationId);
+        NotificationDTO notiDto = noti.toDTO();
+        return ResponseEntity.ok(notiDto);
     }
 
     @GetMapping
