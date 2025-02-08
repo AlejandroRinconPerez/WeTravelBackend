@@ -143,6 +143,19 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    
+      public ResponseEntity<Users> findUserbyUsername(String email) {
+
+        Users user = userJpaRepositorty.findByuserName(email).get();
+        if (user == null) {
+            throw new NotFoundException("User NotFound");
+        }
+
+        UsersDTO userDTO = user.toDTO();
+        return ResponseEntity.ok(user);
+
+    }
+    
     public ResponseEntity<Users> findUserbyEmail(String email) {
 
         Users user = userJpaRepositorty.findByemail(email).get();
@@ -183,22 +196,40 @@ public class UserServiceImpl implements UserService {
         return ResponseEntity.ok(responseDTO);
     }
 
-    
-    
-    public List<UsersDTO> alluserthatarenotfollowingme(String emial){
-        
-        Users user =  userJpaRepositorty.findByemail(emial).get();
-        
-        List<Users >useerList = userJpaRepositorty.findUsersNotFollowedBy(user);
+    public List<UsersDTO> alluserthatarenotfollowingme(String emial) {
+
+        Users user = userJpaRepositorty.findByemail(emial).get();
+
+        List<Users> useerList = userJpaRepositorty.findUsersNotFollowedBy(user);
         if (useerList.isEmpty()) {
             throw new NotFoundException("Users has not been foud");
         }
-       return useerList.stream()
-              .map(Users::toDTO)
-               
+        return useerList.stream()
+                .map(Users::toDTO)
                 .collect(Collectors.toList());
-   
+
     }
-    
-    
+
+public Boolean verificarUserEmailPassword(String email, String password) {
+
+    Optional<Users> userEmailOptional = userJpaRepositorty.findByemail(email);
+    Optional<Users> userPasswordOptional = userJpaRepositorty.findBypassword(password);
+
+    if (userEmailOptional.isPresent() && userPasswordOptional.isPresent()) {
+        Users userEmail = userEmailOptional.get();
+        Users userPassword = userPasswordOptional.get();
+        return userEmail.getIdUser().equals(userPassword.getIdUser()); 
+    } else {
+        return false;
+    }
+}
+    public UsersDTO cambiarStatus(String email) {
+
+        Users user = userJpaRepositorty.findByemail(email).get();
+        user.setActive(false);
+        user = userJpaRepositorty.save(user);
+        return user.toDTO();
+
+    }
+
 }

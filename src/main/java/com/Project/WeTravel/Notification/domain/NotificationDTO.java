@@ -17,6 +17,7 @@ public class NotificationDTO {
     private Long idLike; // solo para tipo Like
     private Long idComment; // solo para tipo Comment
     private String emailRecipient; // usuario que recibe la notificación
+    private Long idPost; //  esto es solo para like y post 
 
 
         public NotificationDTO() {
@@ -28,6 +29,14 @@ public class NotificationDTO {
 
     public void setIdNotification(Long idNotification) {
         this.idNotification = idNotification;
+    }
+
+    public Long getIdPost() {
+        return idPost;
+    }
+
+    public void setIdPost(Long idPost) {
+        this.idPost = idPost;
     }
 
 

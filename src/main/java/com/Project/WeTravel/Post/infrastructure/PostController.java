@@ -30,17 +30,17 @@ public class PostController {
         this.postServiceImpl = postServiceImpl;
     }
 
-    @PostMapping("/{idUser}")
-    public ResponseEntity<ShowPostDTO> CreatePost(@PathVariable Long idUser, @RequestBody CreatePostDTO createPostDTO) {
+    @PostMapping("/{email}")
+    public ResponseEntity<ShowPostDTO> CreatePost(@PathVariable String email, @RequestBody CreatePostDTO createPostDTO) {
 
-        if (idUser == null) {
+        if (email == null) {
             return ResponseEntity.badRequest().build();
         }
         if (createPostDTO == null) {
             return ResponseEntity.badRequest().build();
         }
 
-        return postServiceImpl.createPost(createPostDTO, idUser);
+        return postServiceImpl.createPost(createPostDTO, email);
     }
 //
 //          @GetMapping("/correct")

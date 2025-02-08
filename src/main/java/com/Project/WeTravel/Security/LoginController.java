@@ -5,6 +5,8 @@ package com.Project.WeTravel.Security;
 import com.Project.WeTravel.Users.application.UserDTO.CreateUserDTO;
 import com.Project.WeTravel.Users.application.UserDTO.UsersDTO;
 import com.Project.WeTravel.Users.application.UserServiceImpl;
+import com.Project.WeTravel.Users.domain.Users;
+import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,6 +35,10 @@ public class LoginController {
             String token = jwtAuthtenticationConfig.getJWTToken(username);
 
             LoginUser user = new LoginUser(username, token);
+             
+            Users usertoupdate = userService.findUserbyUsername(username).getBody();
+            usertoupdate.setLastLogin(new Date());
+            userService.updateUserDetails(usertoupdate.getEmail(), usertoupdate);
             return ResponseEntity.ok(user);
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");

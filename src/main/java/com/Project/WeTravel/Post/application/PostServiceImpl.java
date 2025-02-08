@@ -51,14 +51,14 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-        public ResponseEntity<ShowPostDTO> createPost(CreatePostDTO createPostDTO, Long iduser) {
-        if (iduser == null) {
+        public ResponseEntity<ShowPostDTO> createPost(CreatePostDTO createPostDTO, String email) {
+        if (email == null) {
             throw new InvalidInputException("User Id invalid");
         }
         List<Photo> photoList = new ArrayList();
         List<Tag> tagList = new ArrayList();
 
-        Users user = userServiceImpl.getUserNormalbyId(iduser);
+        Users user = userServiceImpl.findUserbyEmail(email).getBody();
         if (user == null) {
             throw new NotFoundException("Users has not been found");
         }

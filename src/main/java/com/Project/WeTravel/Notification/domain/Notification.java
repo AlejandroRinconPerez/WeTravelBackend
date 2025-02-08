@@ -50,7 +50,7 @@ public class Notification {
         this.notificationDate = new Date();
         this.setHora(new Time(notificationDate.getTime()));
         this.follow = follow;
-        this.setToUser(this.follow.getFollowed()); 
+        this.setToUser(this.follow.getFollowed());
     }
 
     public Notification(Comment comment) {
@@ -58,24 +58,17 @@ public class Notification {
         this.notificationDate = new Date();
         this.setHora(new Time(notificationDate.getTime()));
         this.comment = comment;
-       this.setToUser(this.comment.getUser());
+        this.setToUser(this.comment.getUser());
     }
 
-    public Notification( Likes like) {
+    public Notification(Likes like) {
         this.status = false;
         this.notificationDate = new Date();
         this.setHora(new Time(notificationDate.getTime()));
         this.like = like;
-              this.setToUser(this.like.getUser()); 
+        this.setToUser(this.like.getUser());
     }
- 
-    
-    
-    
-    
-    
-    
-    
+
     public Notification(Date notificationDate, Follow follow, Users toUser) {
         this.status = false;
         this.notificationDate = notificationDate;
@@ -147,33 +140,36 @@ public class Notification {
         this.like = like;
     }
 
-public NotificationDTO toDTO() {
-    NotificationDTO dto = new NotificationDTO();
-   
-    dto.setIdNotification(this.idNotification);
-    dto.setDate(this.notificationDate);
-    dto.setHora(new Time( this.notificationDate.getTime()));
-    dto.setEmailRecipient(this.toUser.getEmail()); 
+    public NotificationDTO toDTO() {
+        NotificationDTO dto = new NotificationDTO();
 
-    if (this.follow != null) {
-        dto.setTipo("Follow");
-        dto.setIdFollow(this.follow.getIdData());
-        dto.setEmail(this.follow.getFollower().getEmail());
-        dto.setUserPhoto(this.follow.getFollower().getPhoto());
-    } else if (this.like != null) {
-        dto.setTipo("Like");
-        dto.setIdLike(this.like.getIdLike());
-        dto.setEmail(this.like.getUser().getEmail());
-         dto.setUserPhoto(this.like.getUser().getPhoto());
-    } else if (this.comment != null) {
-        dto.setTipo("Comment");
-         dto.setEmail(this.comment.getUser().getEmail());
-        dto.setIdComment(this.comment.getIdComment());
-         dto.setUserPhoto(this.comment.getUser().getPhoto());
+        dto.setIdNotification(this.idNotification);
+        dto.setDate(this.notificationDate);
+        dto.setHora(new Time(this.notificationDate.getTime()));
+        dto.setEmailRecipient(this.toUser.getEmail());
+
+        if (this.follow != null) {
+            dto.setTipo("Follow");
+            dto.setIdFollow(this.follow.getIdData());
+            dto.setEmail(this.follow.getFollower().getEmail());
+            dto.setUserPhoto(this.follow.getFollower().getPhoto());
+        } else if (this.like != null) {
+            dto.setTipo("Like");
+            dto.setIdLike(this.like.getIdLike());
+            dto.setEmail(this.like.getUser().getEmail());
+            dto.setUserPhoto(this.like.getUser().getPhoto());
+         
+           
+        } else if (this.comment != null) {
+            dto.setTipo("Comment");
+            dto.setEmail(this.comment.getUser().getEmail());
+            dto.setIdComment(this.comment.getIdComment());
+            dto.setUserPhoto(this.comment.getUser().getPhoto());
+            dto.setIdPost(this.comment.getPost().getIdPost());
+        }
+
+        return dto;
     }
-
-    return dto;
-}
 
 //    public static Notification fromDTO(NotificationDTO notificationDTO) {
 //        Notification notification = new Notification();
@@ -185,7 +181,6 @@ public NotificationDTO toDTO() {
 //
 //        return notification;
 //    }
-
     public NotificationLikeDTO toDTOLike() {
 
         NotificationLikeDTO notificationLikeDTO = new NotificationLikeDTO();

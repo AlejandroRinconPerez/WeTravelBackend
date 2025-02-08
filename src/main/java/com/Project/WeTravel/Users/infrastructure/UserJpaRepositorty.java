@@ -15,6 +15,8 @@ public interface UserJpaRepositorty extends JpaRepository<Users, Long>{
   Optional<Users> findByuserName(String name);
   Optional<Users> findByemail(String Email);
   Optional<Users> findBypassword(String password);
+
+  
   
 @Query("SELECT u FROM Users u " +
        "WHERE u.active = true " +  // Solo usuarios activos

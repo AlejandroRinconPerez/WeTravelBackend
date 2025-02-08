@@ -30,11 +30,11 @@ public class UserController {
     }
 
     @GetMapping("/{email}")
-    public ResponseEntity<UsersDTO> getUserById(@PathVariable String email) {
+   public ResponseEntity<UsersDTO> getUserById(@PathVariable String email) {
         Users user = userService.findUserbyEmail(email).getBody();
         return ResponseEntity.ok(user.toDTO());
     }
-
+ 
     @PostMapping
     public ResponseEntity<UsersDTO> createUser(@RequestBody CreateUserDTO createUserDTO) {
         return userService.createUser(createUserDTO);
@@ -47,22 +47,38 @@ public class UserController {
 
     @PutMapping("/update/{email}")
     public ResponseEntity<UsersDTO> updateUser(
-                @PathVariable String email,
+            @PathVariable String email,
             @RequestBody Users user
     ) {
 
         return userService.updateUserDetails(email, user);
     }
 
-        @GetMapping("/notfolloging/{email}")
+    @GetMapping("/notfolloging/{email}")
     public List<UsersDTO> getuserNotFollowing(@PathVariable String email) {
         Users user = userService.findUserbyEmail(email).getBody();
         List<UsersDTO> userlist = userService.alluserthatarenotfollowingme(email);
-        
-        
-        
+
         return userlist;
     }
+
+   @GetMapping("/verify/{email}/{password}")
+public Boolean verifyEmail(@PathVariable String email, @PathVariable String password) {
+    return userService.verificarUserEmailPassword(email, password);
+}
+
+    @PutMapping("/status/{email}")
+    public UsersDTO updateUserStatus(@PathVariable String email) {
+
+        return userService.cambiarStatus(email);
+    }
+
     
+        @GetMapping("/username/{userName}")
+   public ResponseEntity<UsersDTO> getUserName(@PathVariable String userName) {
+        Users user = userService.findUserbyUsername(userName).getBody();
+        return ResponseEntity.ok(user.toDTO());
+    }
+ 
     
 }
