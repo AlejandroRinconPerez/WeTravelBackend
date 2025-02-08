@@ -156,7 +156,7 @@ public class Notification {
             dto.setEmail(this.follow.getFollower().getEmail());
             dto.setUserPhoto(this.follow.getFollower().getPhoto());
             dto.setUsername(this.follow.getFollower().getUserName());
-            dto.setUsername(this.follow.getFollower().getName());
+            dto.setName(this.follow.getFollower().getName());
         } else if (this.like != null) {
             dto.setTipo("Like");
             dto.setIdLike(this.like.getIdLike());

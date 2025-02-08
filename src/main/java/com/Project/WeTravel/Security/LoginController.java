@@ -36,9 +36,9 @@ public class LoginController {
 
             LoginUser user = new LoginUser(username, token);
              
-            Users usertoupdate = userService.findUserbyUsername(username).getBody();
-            usertoupdate.setLastLogin(new Date());
-            userService.updateUserDetails(usertoupdate.getEmail(), usertoupdate);
+//            Users usertoupdate = userService.findUserbyUsername(username).getBody();
+//            usertoupdate.setLastLogin(new Date());
+//            userService.updateUserDetails(usertoupdate.getEmail(), usertoupdate);
             return ResponseEntity.ok(user);
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
