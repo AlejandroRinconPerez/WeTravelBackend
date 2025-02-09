@@ -70,22 +70,7 @@ public class LikeServiceImpl implements LikeService {
             throw new InvalidInputException("Like not found with id: " + idLike);
         }
 
-//    Comment comment = commentServicesImpl.findCommentByLike(idLike);
-//    Post post = postServiceImpl.getPostByIdLike(idLike).getBody();
-//    
-//    if (comment == null && post == null) {
-//        throw new NotFoundException("Comment and post not found for like with id: " + idLike);
-//    }
-//
-//    if (comment != null) {
-//        comment.removelike(likeToEliminate.get());
-//        commentServicesImpl.savecomment(comment);
-//    }
-//
-//    if (post != null) {
-//        post.removeLike(likeToEliminate.get());
-//        postServiceImpl.createPost(post);
-//    }
+
         likeJpaRepository.deleteById(idLike);
     }
 
@@ -115,8 +100,8 @@ public class LikeServiceImpl implements LikeService {
 
         user.addLike(like);
         postlike.addLike(like);
-        userServiceImpl.saveUserEntity(user);
-        postServiceImpl.createPost(postlike);
+       
+        
         like = likeJpaRepository.save(like);
         notificationServiceImp.createNotificationLike(like);
 
@@ -136,8 +121,8 @@ public class LikeServiceImpl implements LikeService {
         Likes like = new Likes(user, commentlike);
         commentlike.addlike(like);
         user.addLike(like);
-        commentServicesImpl.savecomment(commentlike);
-        userServiceImpl.saveUserEntity(user);
+      
+        
         like = likeJpaRepository.save(like);
         notificationServiceImp.createNotificationLike(like);
         return ResponseEntity.ok(like.toLikeCommentDTO());

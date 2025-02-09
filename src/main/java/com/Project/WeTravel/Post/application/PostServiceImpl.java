@@ -41,15 +41,23 @@ public class PostServiceImpl implements PostService {
     private final UserServiceImpl userServiceImpl;
     private final PhotoJpaRepository photoJpaRepository;
     private final TagJpaRepository tagJpaRepository;
+    private final TagServiceIpml tagServiceIpml;
 
-    @Autowired
-    public PostServiceImpl(PostJpaRepository postJpaRepository, UserServiceImpl userServiceImpl, PhotoJpaRepository photoJpaRepository, TagJpaRepository tagJpaRepository) {
+    
+        @Autowired
+    public PostServiceImpl(PostJpaRepository postJpaRepository, UserServiceImpl userServiceImpl, PhotoJpaRepository photoJpaRepository, TagJpaRepository tagJpaRepository, TagServiceIpml tagServiceIpml) {
         this.postJpaRepository = postJpaRepository;
         this.userServiceImpl = userServiceImpl;
         this.photoJpaRepository = photoJpaRepository;
         this.tagJpaRepository = tagJpaRepository;
+        this.tagServiceIpml = tagServiceIpml;
     }
 
+    
+    
+    
+
+ 
     @Override
         public ResponseEntity<ShowPostDTO> createPost(CreatePostDTO createPostDTO, String email) {
         if (email == null) {
@@ -221,6 +229,7 @@ public ResponseEntity<Void> deletePost(Long idPost) {
 
         // Actualizar campos básicos
         if (createPostDTO.getDescription() != null) {
+            
             post.setDescription(createPostDTO.getDescription());
         }
         post.setUpdatedDate(new Date()); // Actualizar fecha de modificación
@@ -242,11 +251,17 @@ public ResponseEntity<Void> deletePost(Long idPost) {
 
         // Manejo de tags
         if (createPostDTO.getListTag() != null) {
-            post.getTagList().clear();
+            System.out.println(post.getTagList());
+            new ArrayList<>(post.getTagList()).forEach(post::removeTag);
+            System.out.println(post.getTagList());
+          
+             
+           
             for (String tagContent : createPostDTO.getListTag()) {
-                Tag tag = tagJpaRepository.findBytagContent(tagContent)
-                        .orElseGet(() -> tagJpaRepository.save(new Tag(tagContent)));
-                post.getTagList().add(tag);
+                Tag tag = tagServiceIpml.findBytagContent(tagContent)
+                        .orElseGet(() -> tagServiceIpml.savetag(new Tag(tagContent)));
+                System.out.println(tag);
+                post.addTag(tag);
             }
         }
 

@@ -50,6 +50,15 @@ public class TagServiceIpml implements TagService {
         return tagJpaRepository.existsByTagContent(tagContent);
     }
     
+
+    
+    public Tag savetag(Tag tag){
+      Tag tag2 =   tagJpaRepository.save(tag);
+      return tag2;
+    }
+    
+    
+    
     @Override
     public ResponseEntity<Tag> createTag(Tag tag) {
        
