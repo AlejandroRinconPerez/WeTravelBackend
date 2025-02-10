@@ -1,4 +1,6 @@
 # 🏬 WE Travel 
+mas info dobre EndPontis aca 
+- http://localhost:8080/swagger-ui/index.html#/
 
 
 ## 🚀 Descripción del Proyecto
