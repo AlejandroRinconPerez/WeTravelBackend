@@ -61,5 +61,22 @@ Post findPostByLikeId(@Param("likeId") Long likeId);
 
 
 
+@Query("SELECT p FROM Post p JOIN p.user u WHERE LOWER(u.userName) LIKE LOWER(CONCAT('%', :userName, '%'))")
+List<Post> findPostsByUserNameContainingIgnoreCase(@Param("userName") String userName);
+
+
+@Query("SELECT p FROM Post p WHERE LOWER(p.description) LIKE LOWER(CONCAT('%', :description, '%'))")
+List<Post> findPostsByDescriptionContainingIgnoreCase(@Param("description") String description);
+
+
+@Query("SELECT p FROM Post p JOIN p.tagList t WHERE LOWER(t.tagContent) LIKE LOWER(CONCAT('%', :tagContent, '%'))")
+List<Post> findPostsByTagContentContainingIgnoreCase(@Param("tagContent") String tagContent);
+
+
+
+
+
+
+
 
 }

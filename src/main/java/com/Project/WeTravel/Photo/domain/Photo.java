@@ -10,6 +10,7 @@ public class Photo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idPhoto;
+    
 
     @Column(name = "Url")
     private String UrlImg;
@@ -66,12 +67,16 @@ public class Photo {
     public PhotoDTOurl toPhotoDTOurl() {
         PhotoDTOurl photoDTOurl = new PhotoDTOurl();
         photoDTOurl.setUrl(this.UrlImg);
+        photoDTOurl.setIdPost(this.getPost().getIdPost());
+        
         return photoDTOurl;
     }
 
     public static Photo fromPhotoDTOurl(PhotoDTOurl photoDTOurl) {
         Photo photo = new Photo();
+        photo.setIdPhoto(photoDTOurl.getIdPost());
         photo.setUrlImg(photoDTOurl.getUrl());
+        
         return photo;
     }
     
