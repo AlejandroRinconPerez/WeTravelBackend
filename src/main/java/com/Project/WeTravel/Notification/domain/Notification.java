@@ -58,7 +58,7 @@ public class Notification {
         this.notificationDate = new Date();
         this.setHora(new Time(notificationDate.getTime()));
         this.comment = comment;
-        this.setToUser(this.comment.getUser());
+        this.setToUser(this.comment.getPost().getUser());
     }
 
     public Notification(Likes like) {
@@ -66,7 +66,15 @@ public class Notification {
         this.notificationDate = new Date();
         this.setHora(new Time(notificationDate.getTime()));
         this.like = like;
-        this.setToUser(this.like.getUser());
+        if (this.like.getComment() != null) {
+          
+            this.setToUser(this.like.getComment().getPost().getUser());
+        } 
+        else if (this.like.getPost() != null) {
+            
+            this.setToUser(this.like.getPost().getUser());
+        }
+
     }
 
     public Notification(Date notificationDate, Follow follow, Users toUser) {
@@ -148,7 +156,6 @@ public class Notification {
         dto.setHora(new Time(this.notificationDate.getTime()));
         dto.setEmailRecipient(this.toUser.getEmail());
         dto.setStatus(this.status);
-      
 
         if (this.follow != null) {
             dto.setTipo("Follow");
@@ -164,8 +171,7 @@ public class Notification {
             dto.setUserPhoto(this.like.getUser().getPhoto());
             dto.setUsername(this.like.getUser().getUserName());
             dto.setName(this.like.getUser().getName());
-         
-           
+
         } else if (this.comment != null) {
             dto.setTipo("Comment");
             dto.setEmail(this.comment.getUser().getEmail());

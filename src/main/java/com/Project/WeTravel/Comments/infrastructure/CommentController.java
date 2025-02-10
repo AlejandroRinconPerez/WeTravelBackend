@@ -63,8 +63,6 @@ public ResponseEntity<CommentDTO> updateComment(@PathVariable("id") Long idComme
         return ResponseEntity.noContent().build();
     }
     
-    // Asegúrate de que el post está seteado antes de guardar el comentario
-   
     Post post = postServiceImpl.getPostbycomment( commentServicesImpl.findComentBYid(idComment).getBody());
     if (post == null) {
         return ResponseEntity.badRequest().build();

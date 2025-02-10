@@ -125,7 +125,7 @@ public class Likes {
         LikeCommentDTO likeCommentDTO = new LikeCommentDTO();
         likeCommentDTO.setIdLike(this.idLike);
         likeCommentDTO.setIdUser(this.user.getIdUser());
-        likeCommentDTO.setUserName(this.user.getName()); 
+        likeCommentDTO.setUserName(this.user.getUserName()); 
         likeCommentDTO.setUserProfilePhoto(this.user.getPhoto()); 
         likeCommentDTO.setIdComment(this.comment.getIdComment());
         likeCommentDTO.setReactionDate(this.reactionDate);
@@ -138,7 +138,7 @@ public class Likes {
         like.setIdLike(likeCommentDTO.getIdLike());
         Users user = new Users();
         user.setIdUser(likeCommentDTO.getIdUser());
-        user.setName(likeCommentDTO.getUserName()); 
+        user.setUserName(likeCommentDTO.getUserName()); 
         user.setPhoto(likeCommentDTO.getUserProfilePhoto()); 
         like.setUser(user);
         Comment comment = new Comment();
@@ -153,7 +153,7 @@ public class Likes {
         LikePostDTO likePostDTO = new LikePostDTO();
         likePostDTO.setIdLike(this.idLike);
         likePostDTO.setIdUser(this.user.getIdUser());
-        likePostDTO.setUserName(this.user.getName()); 
+        likePostDTO.setUserName(this.user.getUserName()); 
         likePostDTO.setUserProfilePhoto(this.user.getPhoto()); 
         likePostDTO.setIdPost(this.post.getIdPost());
         likePostDTO.setReactionDate(this.reactionDate);
@@ -166,7 +166,7 @@ public class Likes {
         like.setIdLike(likePostDTO.getIdLike());
         Users user = new Users();
         user.setIdUser(likePostDTO.getIdUser());
-        user.setName(likePostDTO.getUserName()); 
+        user.setUserName(likePostDTO.getUserName()); 
         user.setPhoto(likePostDTO.getUserProfilePhoto()); 
         like.setUser(user);
         Post post = new Post();

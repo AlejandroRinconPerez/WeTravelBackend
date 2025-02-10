@@ -1,4 +1,3 @@
-
 package com.Project.WeTravel.Security;
 import static com.Project.WeTravel.Security.Constants.SUPER_SECRET_KEY;
 import static com.Project.WeTravel.Security.Constants.TOKEN_EXPIRATION_TIME;
@@ -48,4 +47,3 @@ public class JWTAuthtenticationConfig {
     }
 
 }
-

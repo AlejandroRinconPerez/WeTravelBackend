@@ -1,4 +1,3 @@
-
 package com.Project.WeTravel.Security;
 
 import static com.Project.WeTravel.Security.Constants.HEADER_AUTHORIZACION_KEY;
@@ -19,8 +18,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-    
-    @Component
+@Component
 public class JWTAuthorizationFilter extends OncePerRequestFilter {
 
     private Claims setSigningKey(HttpServletRequest request) {
@@ -39,8 +37,8 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
 
         List<String> authorities = (List<String>) claims.get("authorities");
 
-        UsernamePasswordAuthenticationToken auth =
-                new UsernamePasswordAuthenticationToken(claims.getSubject(), null,
+        UsernamePasswordAuthenticationToken auth
+                = new UsernamePasswordAuthenticationToken(claims.getSubject(), null,
                         authorities.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList()));
 
         SecurityContextHolder.getContext().setAuthentication(auth);
@@ -49,13 +47,15 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
 
     private boolean isJWTValid(HttpServletRequest request, HttpServletResponse res) {
         String authenticationHeader = request.getHeader(HEADER_AUTHORIZACION_KEY);
-        if (authenticationHeader == null || !authenticationHeader.startsWith(TOKEN_BEARER_PREFIX))
+        if (authenticationHeader == null || !authenticationHeader.startsWith(TOKEN_BEARER_PREFIX)) {
             return false;
+        }
         return true;
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+     
         try {
             if (isJWTValid(request, response)) {
                 Claims claims = setSigningKey(request);
@@ -73,14 +73,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
             response.sendError(HttpServletResponse.SC_FORBIDDEN, e.getMessage());
             return;
         }
-    
-    }
-    
 
-    
-    
+    }
 
 }
-    
-    
-
