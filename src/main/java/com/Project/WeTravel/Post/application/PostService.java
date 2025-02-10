@@ -27,16 +27,28 @@ public interface PostService {
 
     // Métodos adicionales
     List<CombinePostDTO> getAllPosts2(List<Post> postList);
+
     CombinePostDTO getSinglePostDetails(Post postItem);
+
     CombinePostDTO getPostById(Long idPost);
+
     ResponseEntity<Post> updatePost(Long postId, CreatePostDTO createPostDTO);
+
     ResponseEntity<Post> getPostByIdLike(Long idLike);
+
     List<CombinePostDTO> findByUserOrderByCreationDateDesc(Long idUser);
+
     List<CombinePostDTO> getAllPost();
+
     List<CombinePostDTO> findPostsByTagContent(String tagtext);
+
     List<CombinePostDTO> findAllOrderByLikesDesc();
+
     List<CombinePostDTO> findPostsByUserId(Long userid);
+
     List<CombinePostDTO> findPostsByActiveUsers();
-    List<CombinePostDTO> findPostsLikedByUser(Long id);
+
+    List<CombinePostDTO> findPostsLikedByUser(String email);
+
     Post getPostbycomment(Comment comment);
 }

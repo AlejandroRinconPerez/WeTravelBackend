@@ -2,8 +2,6 @@ package com.Project.WeTravel.Folllow.domain;
 
 import com.Project.WeTravel.Notification.domain.Notification;
 import com.Project.WeTravel.Users.domain.Users;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

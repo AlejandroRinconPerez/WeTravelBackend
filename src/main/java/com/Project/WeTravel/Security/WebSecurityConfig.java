@@ -20,12 +20,10 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.Arrays;
 import java.util.Collections;
 
-
-
 @EnableWebSecurity
 @Configuration
 public class WebSecurityConfig {
-    
+
     @Autowired
     JWTAuthorizationFilter jwtAuthorizationFilter;
 
@@ -48,7 +46,8 @@ public class WebSecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Collections.singletonList("http://127.0.0.1:5501/"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedOrigins(Collections.singletonList("http://127.0.0.1:5502/"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH","OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Access-Control-Allow-Origin"));
         configuration.setAllowCredentials(true);
 
@@ -56,5 +55,5 @@ public class WebSecurityConfig {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
-    
+
 }

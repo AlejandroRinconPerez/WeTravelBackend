@@ -68,10 +68,10 @@ public class PostController {
 
 // Post Pendiente 
     //  post  por usuario los que yo sigo 
-    @GetMapping("/user/{idUser}")
-    public ResponseEntity<List<CombinePostDTO>> getAllPostsUser(@PathVariable Long idUser) {
+    @GetMapping("/user/{email}")
+    public ResponseEntity<List<CombinePostDTO>> getAllPostsUser(@PathVariable String email) {
         try {
-            List<CombinePostDTO> listaPost = postServiceImpl.findByUserOrderByCreationDateDesc(idUser);
+            List<CombinePostDTO> listaPost = postServiceImpl.findByUserOrderByCreationDateDesc(email);
             return ResponseEntity.ok(listaPost);
         } catch (Exception e) {
 
@@ -141,10 +141,10 @@ public class PostController {
     }
 
 // Post de los que yo sigo 
-    @GetMapping("/my/{idUser}")
-    public ResponseEntity<List<CombinePostDTO>> findPostsByUserId(@PathVariable Long idUser) {
+    @GetMapping("/my/{email}")
+    public ResponseEntity<List<CombinePostDTO>> findPostsByUserId(@PathVariable String email) {
         try {
-            List<CombinePostDTO> listaPost = postServiceImpl.findPostsByUserId(idUser);
+            List<CombinePostDTO> listaPost = postServiceImpl.findPostsByUserId(email);
             return ResponseEntity.ok(listaPost);
         } catch (Exception e) {
 
@@ -155,10 +155,10 @@ public class PostController {
         }
     }
 
-    @GetMapping("/liked/{idUser}")
-    public ResponseEntity<List<CombinePostDTO>> findPostsLikedByUserId(@PathVariable Long idUser) {
+    @GetMapping("/liked/{email}")
+    public ResponseEntity<List<CombinePostDTO>> findPostsLikedByUserId(@PathVariable String email) {
         try {
-            List<CombinePostDTO> listaPost = postServiceImpl.findPostsLikedByUser(idUser);
+            List<CombinePostDTO> listaPost = postServiceImpl.findPostsLikedByUser(email);
             return ResponseEntity.ok(listaPost);
         } catch (Exception e) {
 

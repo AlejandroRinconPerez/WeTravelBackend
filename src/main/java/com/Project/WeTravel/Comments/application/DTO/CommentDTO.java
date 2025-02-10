@@ -1,9 +1,6 @@
 package com.Project.WeTravel.Comments.application.DTO;
 
-import com.Project.WeTravel.Comments.domain.Comment;
 import com.Project.WeTravel.Likes.application.DTO.LikeCommentDTO;
-import com.Project.WeTravel.Likes.domain.Likes;
-import com.Project.WeTravel.Users.domain.Users;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -14,6 +11,7 @@ public class CommentDTO {
     private String content;
     private Date createDate;
     private String userName;
+    private String name;
     private String userProfilePhoto;
     private List<LikeCommentDTO> likes = new ArrayList<>();
 
@@ -52,6 +50,14 @@ public class CommentDTO {
 
     public String getUserProfilePhoto() {
         return userProfilePhoto;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void setUserProfilePhoto(String userProfilePhoto) {

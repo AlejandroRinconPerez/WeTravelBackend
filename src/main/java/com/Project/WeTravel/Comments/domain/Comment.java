@@ -131,46 +131,47 @@ public class Comment {
     }
 
     public CommentDTO toDTO() {
-    CommentDTO commentDTO = new CommentDTO();
-    commentDTO.setIdComment(this.idComment);
-    commentDTO.setContent(this.content);
-    commentDTO.setCreateDate(this.createDate);
-    commentDTO.setUserName(this.user.getName());
-    commentDTO.setUserProfilePhoto(this.user.getPhoto());
+        CommentDTO commentDTO = new CommentDTO();
+        commentDTO.setIdComment(this.idComment);
+        commentDTO.setContent(this.content);
+        commentDTO.setCreateDate(this.createDate);
+        commentDTO.setUserName(this.user.getUserName());
+        commentDTO.setName(this.user.getName());
 
-    
-    if (this.likeList != null) {
-        for (Likes item : this.likeList) {
-            LikeCommentDTO like = item.toLikeCommentDTO();
-            commentDTO.getLikes().add(like);
+        commentDTO.setUserProfilePhoto(this.user.getPhoto());
+
+        if (this.likeList != null) {
+            for (Likes item : this.likeList) {
+                LikeCommentDTO like = item.toLikeCommentDTO();
+                commentDTO.getLikes().add(like);
+            }
         }
-    }
 
-    return commentDTO;
-}
+        return commentDTO;
+    }
 
     public static Comment fromDTO(CommentDTO commentDTO) {
-    Comment comment = new Comment();
-    comment.setIdComment(commentDTO.getIdComment());
-    comment.setContent(commentDTO.getContent());
-    comment.setCreateDate(commentDTO.getCreateDate());
+        Comment comment = new Comment();
+        comment.setIdComment(commentDTO.getIdComment());
+        comment.setContent(commentDTO.getContent());
+        comment.setCreateDate(commentDTO.getCreateDate());
 
-    Users user = new Users();
-    user.setName(commentDTO.getUserName());
-    user.setPhoto(commentDTO.getUserProfilePhoto());
-    comment.setUser(user);
+        Users user = new Users();
+        user.setName(commentDTO.getName());
+        user.setUserName(commentDTO.getUserName());
 
-    // Ensure likes list is not null before iterating
-    if (commentDTO.getLikes() != null) {
-        for (LikeCommentDTO item : commentDTO.getLikes()) {
-            Likes like = Likes.fromLikeCommentDTO(item);
-            comment.getLikeList().add(like);
+        user.setPhoto(commentDTO.getUserProfilePhoto());
+        comment.setUser(user);
+
+        // Ensure likes list is not null before iterating
+        if (commentDTO.getLikes() != null) {
+            for (LikeCommentDTO item : commentDTO.getLikes()) {
+                Likes like = Likes.fromLikeCommentDTO(item);
+                comment.getLikeList().add(like);
+            }
         }
+
+        return comment;
     }
-
-    return comment;
-}
-
-   
 
 }
