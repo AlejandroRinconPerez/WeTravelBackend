@@ -37,7 +37,8 @@ public interface PostJpaRepository extends JpaRepository<Post, Long> {
     @Query("SELECT p FROM Post p LEFT JOIN p.likeList l WHERE p.user.active = true GROUP BY p.idPost ORDER BY COUNT(l) DESC")
     List<Post> findAllOrderByLikesDesc();
 
-    @Query("SELECT p FROM Post p JOIN p.user u WHERE u.active = true")
+    
+@Query("SELECT p FROM Post p JOIN p.user u WHERE u.active = true")
     List<Post> findPostsByActiveUsers();
 
     @Query("SELECT p FROM Post p "

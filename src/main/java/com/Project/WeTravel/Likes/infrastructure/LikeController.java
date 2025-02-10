@@ -38,7 +38,7 @@ public class LikeController {
         }
     }
 
-    @PostMapping("/likecomment/{idUser}/{idComment}")
+    @PostMapping("/likecomment/{email}/{idComment}")
     public ResponseEntity<LikeCommentDTO> createLikecomment(@PathVariable String email, @PathVariable Long idComment) {
         try {
             return likeServiceImpl.createLikeComment(idComment, email);
@@ -48,7 +48,7 @@ public class LikeController {
         }
     }
 
- @DeleteMapping("{idLike}")
+ @DeleteMapping("/{idLike}")
     public ResponseEntity<Void> deleteLike(@PathVariable Long idLike) {
         try {
             likeServiceImpl.deleteLike(idLike);

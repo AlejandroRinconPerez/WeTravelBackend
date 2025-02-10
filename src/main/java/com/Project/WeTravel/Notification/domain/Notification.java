@@ -50,7 +50,7 @@ public class Notification {
         this.notificationDate = new Date();
         this.setHora(new Time(notificationDate.getTime()));
         this.follow = follow;
-        this.setToUser(this.follow.getFollowed());
+        this.setToUser(this.follow.getFollower());
     }
 
     public Notification(Comment comment) {
