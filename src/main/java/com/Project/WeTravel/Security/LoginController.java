@@ -25,21 +25,21 @@ public class LoginController {
 
     
 
-    @PostMapping("/login")
-    public ResponseEntity<?> login(
-            @RequestParam("userName") String username,
-            @RequestParam("password") String password) {
+@PostMapping("/login")
+public ResponseEntity<?> login(
+        @RequestParam("userName") String username,
+        @RequestParam("password") String password) {
 
-        if (userService.verificarUsername(username, password)) {
-            String token = jwtAuthtenticationConfig.getJWTToken(username);
+    if (userService.verificarLogin(username, password)) {
+        String token = jwtAuthtenticationConfig.getJWTToken(username);
 
-            LoginUser user = new LoginUser(username, token);
-             
-            return ResponseEntity.ok(user);
-        }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
-
+        LoginUser user = new LoginUser(username, token);
+         
+        return ResponseEntity.ok(user);
     }
+    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
+}
+
 
     
     

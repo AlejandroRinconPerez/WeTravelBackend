@@ -14,16 +14,19 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     private final UserJpaRepositorty userJpaRepositorty;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserJpaRepositorty userJpaRepositorty) {
+    public UserServiceImpl(UserJpaRepositorty userJpaRepositorty, PasswordEncoder passwordEncoder) {
         this.userJpaRepositorty = userJpaRepositorty;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -92,15 +95,20 @@ public class UserServiceImpl implements UserService {
             throw new NotFoundException("No info in the body try again");
         }
         if (createUserDTO.getUserName() == null || createUserDTO.getUserName().trim().isEmpty()) {
-            throw new InvalidInputException("El nombre de usuario es requerido");
+            throw new InvalidInputException("user name is mandatory");
         }
 
         if (createUserDTO.getEmail() == null || createUserDTO.getEmail().trim().isEmpty()) {
-            throw new InvalidInputException("El email es requerido");
+            throw new InvalidInputException("Email is needed");
         }
         Users usercreated = Users.fromDTOCreate(createUserDTO);
         usercreated.setActive(true);
         usercreated.setCreationDate(new Date());
+        
+        String encryptedPassword = passwordEncoder.encode(createUserDTO.getPassword());
+        
+        usercreated.setPassword(encryptedPassword);
+
         usercreated = userJpaRepositorty.save(usercreated);
         return ResponseEntity.ok(usercreated.toDTO());
 
@@ -143,9 +151,8 @@ public class UserServiceImpl implements UserService {
 
     }
 
-    
     @Override
-      public ResponseEntity<Users> findUserbyUsername(String email) {
+    public ResponseEntity<Users> findUserbyUsername(String email) {
 
         Users user = userJpaRepositorty.findByuserName(email).get();
         if (user == null) {
@@ -156,7 +163,7 @@ public class UserServiceImpl implements UserService {
         return ResponseEntity.ok(user);
 
     }
-    
+
     @Override
     public ResponseEntity<Users> findUserbyEmail(String email) {
 
@@ -217,17 +224,18 @@ public class UserServiceImpl implements UserService {
     @Override
     public Boolean verificarUserEmailPassword(String email, String password) {
 
-    Optional<Users> userEmailOptional = userJpaRepositorty.findByemail(email);
-    Optional<Users> userPasswordOptional = userJpaRepositorty.findBypassword(password);
+        Optional<Users> userEmailOptional = userJpaRepositorty.findByemail(email);
+        Optional<Users> userPasswordOptional = userJpaRepositorty.findBypassword(password);
 
-    if (userEmailOptional.isPresent() && userPasswordOptional.isPresent()) {
-        Users userEmail = userEmailOptional.get();
-        Users userPassword = userPasswordOptional.get();
-        return userEmail.getIdUser().equals(userPassword.getIdUser()); 
-    } else {
-        return false;
+        if (userEmailOptional.isPresent() && userPasswordOptional.isPresent()) {
+            Users userEmail = userEmailOptional.get();
+            Users userPassword = userPasswordOptional.get();
+            return userEmail.getIdUser().equals(userPassword.getIdUser());
+        } else {
+            return false;
+        }
     }
-}
+
     @Override
     public UsersDTO cambiarStatus(String email) {
 
@@ -237,5 +245,14 @@ public class UserServiceImpl implements UserService {
         return user.toDTO();
 
     }
+public Boolean verificarLogin(String username, String password) {
+    Optional<Users> userOpt = userJpaRepositorty.findByUserName(username);
+    
+    if (userOpt.isPresent()) {
+        Users user = userOpt.get();
+        return passwordEncoder.matches(password, user.getPassword());
+    }
+    return false;
+}
 
 }

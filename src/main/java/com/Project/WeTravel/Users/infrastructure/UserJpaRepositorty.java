@@ -15,6 +15,7 @@ public interface UserJpaRepositorty extends JpaRepository<Users, Long>{
   Optional<Users> findByuserName(String name);
   Optional<Users> findByemail(String Email);
   Optional<Users> findBypassword(String password);
+  Optional<Users> findByUserName(String userName);
 
   
   
@@ -33,6 +34,9 @@ List<Users> findUsersByUserNameContainingIgnoreCase(@Param("userName") String us
 
 @Query("SELECT u FROM Users u WHERE LOWER(u.email) LIKE LOWER(CONCAT('%', :email, '%'))")
 List<Users> findUsersByEmailContainingIgnoreCase(@Param("email") String email);
+
+
+
 
 
 
